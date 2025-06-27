@@ -40,17 +40,10 @@ defmodule DaisyUIComponents.Drawer do
     <div class={@class} {@rest}>
       <input id={@selector_id} type="checkbox" class="drawer-toggle" />
       {render_slot(@inner_block)}
-      <.drawer_content
-        :for={drawer_content <- @drawer_content}
-        class={Map.get(drawer_content, :class)}
-      >
+      <.drawer_content :for={drawer_content <- @drawer_content} class={Map.get(drawer_content, :class)}>
         {render_slot(drawer_content)}
       </.drawer_content>
-      <.drawer_side
-        :for={drawer_side <- @drawer_side}
-        class={Map.get(drawer_side, :class)}
-        selector_id={@selector_id}
-      >
+      <.drawer_side :for={drawer_side <- @drawer_side} class={Map.get(drawer_side, :class)} selector_id={@selector_id}>
         {render_slot(drawer_side)}
       </.drawer_side>
     </div>

@@ -65,11 +65,7 @@ defmodule Storybook.Welcome do
                   />
                 </div>
               </div>
-              <.menu
-                tabindex="0"
-                size="sm"
-                class="dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
+              <.menu tabindex="0" size="sm" class="dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                 <:item>
                   <a class="justify-between">
                     Profile
@@ -148,13 +144,7 @@ defmodule Storybook.Welcome do
                   </.badge>
                 </:col>
               </.table>
-              <.pagination
-                class="justify-center mt-5"
-                size="md"
-                page={1}
-                total_entries={4}
-                page_size={1}
-              />
+              <.pagination class="justify-center mt-5" size="md" page={1} total_entries={4} page_size={1} />
             </:card_body>
           </.card>
         </div>
@@ -164,12 +154,7 @@ defmodule Storybook.Welcome do
               Create new user
               <:subtitle>This won't be persisted into DB, memory only</:subtitle>
             </.header>
-            <.simple_form
-              :let={f}
-              for={%{}}
-              as={:user}
-              phx-submit={JS.push("save_user") |> hide_modal("new-user-modal")}
-            >
+            <.simple_form :let={f} for={%{}} as={:user} phx-submit={JS.push("save_user") |> hide_modal("new-user-modal")}>
               <.input field={f[:first_name]} label="First name" />
               <.input field={f[:last_name]} label="Last name" />
               <:actions>

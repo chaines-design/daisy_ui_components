@@ -274,14 +274,7 @@ defmodule DaisyUIComponents.Tabs do
 
   def tab_radio(assigns) do
     ~H"""
-    <input
-      type="radio"
-      name={@name}
-      class={@class}
-      aria-label={@title}
-      checked={@active && "checked"}
-      {@rest}
-    />
+    <input type="radio" name={@name} class={@class} aria-label={@title} checked={@active && "checked"} {@rest} />
     """
   end
 

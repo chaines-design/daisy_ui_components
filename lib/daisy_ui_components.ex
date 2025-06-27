@@ -70,6 +70,7 @@ defmodule DaisyUIComponents do
       import DaisyUIComponents.Menu
       import DaisyUIComponents.Modal
       import DaisyUIComponents.Navbar
+      import DaisyUIComponents.NavPanel
       import DaisyUIComponents.Pagination
       import DaisyUIComponents.Progress
       import DaisyUIComponents.Radio

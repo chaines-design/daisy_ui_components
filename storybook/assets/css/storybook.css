@@ -8,7 +8,7 @@
 @source "../../deps/daisy_ui_components";
 
 @plugin "../vendor/heroicons";
-@plugin "../vendor/daisyui" {
+@plugin "../node_modules/daisyui" {
   /* In practice, you will likely ship only with two themes, as below: */
   /* themes: light --default, dark --prefersdark; */
   themes: all;

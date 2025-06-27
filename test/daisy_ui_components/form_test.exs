@@ -21,15 +21,7 @@ defmodule DaisyUIComponents.FormTest do
     assigns = %{}
 
     ~H"""
-    <.form_input
-      id="1"
-      name="input[name]"
-      type="checkbox"
-      class="text-xs"
-      for="some-input"
-      value="false"
-      disabled
-    />
+    <.form_input id="1" name="input[name]" type="checkbox" class="text-xs" for="some-input" value="false" disabled />
     """
     |> parse_component()
     |> assert_component("fieldset")

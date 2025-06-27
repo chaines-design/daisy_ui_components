@@ -15,8 +15,7 @@ config :daisy_ui_components_site, DaisyUIComponentsSiteWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "/b5nkXlv1KkFuDIrJ8slHJqZbEa42KhNeMe+Qu14ulSWdhBphOYMFypsEAZMx0LY",
   watchers: [
-    esbuild:
-      {Esbuild, :install_and_run, [:daisy_ui_components_site, ~w(--sourcemap=inline --watch)]},
+    esbuild: {Esbuild, :install_and_run, [:daisy_ui_components_site, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:daisy_ui_components_site, ~w(--watch)]},
     storybook_esbuild: {Esbuild, :install_and_run, [:storybook, ~w(--sourcemap=inline --watch)]},
     storybook_tailwind: {Tailwind, :install_and_run, [:storybook, ~w(--watch)]}

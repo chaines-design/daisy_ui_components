@@ -34,15 +34,13 @@ defmodule DaisyUIComponents.Swap do
   attr :rest, :global
 
   slot :swap_on,
-    doc:
-      "the child element that should be visible when checkbox is checked or when swap is active" do
+    doc: "the child element that should be visible when checkbox is checked or when swap is active" do
     attr :type, :string, values: ["label", "icon"]
     attr :name, :string, required: true
   end
 
   slot :swap_off,
-    doc:
-      "The child element that should be visible when checkbox is not checked or when swap is not active" do
+    doc: "The child element that should be visible when checkbox is not checked or when swap is not active" do
     attr :type, :string, values: ["label", "icon"]
     attr :name, :string, required: true
   end
@@ -61,18 +59,8 @@ defmodule DaisyUIComponents.Swap do
       <% else %>
         <input type="checkbox" />
       <% end %>
-      <.swap_mode
-        :for={swap_on <- @swap_on}
-        type={Map.get(swap_on, :type, "label")}
-        name={swap_on.name}
-        mode="on"
-      />
-      <.swap_mode
-        :for={swap_off <- @swap_off}
-        type={Map.get(swap_off, :type, "label")}
-        name={swap_off.name}
-        mode="off"
-      />
+      <.swap_mode :for={swap_on <- @swap_on} type={Map.get(swap_on, :type, "label")} name={swap_on.name} mode="on" />
+      <.swap_mode :for={swap_off <- @swap_off} type={Map.get(swap_off, :type, "label")} name={swap_off.name} mode="off" />
     </label>
     """
   end

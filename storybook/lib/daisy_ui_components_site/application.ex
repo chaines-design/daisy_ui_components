@@ -9,8 +9,7 @@ defmodule DaisyUIComponentsSite.Application do
   def start(_type, _args) do
     children = [
       DaisyUIComponentsSiteWeb.Telemetry,
-      {DNSCluster,
-       query: Application.get_env(:daisy_ui_components_site, :dns_cluster_query) || :ignore},
+      {DNSCluster, query: Application.get_env(:daisy_ui_components_site, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: DaisyUIComponentsSite.PubSub},
       # Start a worker by calling: DaisyUIComponentsSite.Worker.start_link(arg)
       # {DaisyUIComponentsSite.Worker, arg},

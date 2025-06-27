@@ -114,8 +114,7 @@ defmodule Storybook.Components.Hero do
       %Variation{
         id: :hero_with_overlay_image,
         attributes: %{
-          style:
-            ~s(background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)
+          style: ~s(background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)
         },
         slots: [
           """

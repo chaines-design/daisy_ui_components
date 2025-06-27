@@ -22,8 +22,7 @@ defmodule DaisyUIComponents.Collapse do
 
   attr :checkbox, :boolean,
     default: false,
-    doc:
-      "This collapse works with checkbox instead of focus. It needs to get clicked again to get closed."
+    doc: "This collapse works with checkbox instead of focus. It needs to get clicked again to get closed."
 
   attr :arrow, :boolean, default: false
   attr :plus, :boolean, default: false

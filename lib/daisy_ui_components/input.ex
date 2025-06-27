@@ -32,8 +32,7 @@ defmodule DaisyUIComponents.Input do
 
   attr :color, :string, values: [nil] ++ colors(), default: nil
 
-  attr :field, Phoenix.HTML.FormField,
-    doc: "a form field struct retrieved from the form, for example: @form[:email]"
+  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :class, :any, default: nil
   attr :ghost, :boolean, default: nil
@@ -43,8 +42,7 @@ defmodule DaisyUIComponents.Input do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
-  attr :rest, :global,
-    include: ~w(autocomplete cols disabled form list max maxlength min minlength
+  attr :rest, :global, include: ~w(autocomplete cols disabled form list max maxlength min minlength
                 pattern placeholder readonly required rows size step)
 
   slot :inner_block
@@ -64,15 +62,7 @@ defmodule DaisyUIComponents.Input do
       end)
 
     ~H"""
-    <.checkbox
-      id={@id}
-      name={@name}
-      class={@class}
-      color={@color}
-      checked={@checked}
-      value={@value}
-      {@rest}
-    />
+    <.checkbox id={@id} name={@name} class={@class} color={@color} checked={@checked} value={@value} {@rest} />
     """
   end
 
@@ -86,15 +76,7 @@ defmodule DaisyUIComponents.Input do
       end)
 
     ~H"""
-    <.radio
-      id={@id}
-      name={@name}
-      class={@class}
-      color={@color}
-      checked={@checked}
-      value={@value}
-      {@rest}
-    />
+    <.radio id={@id} name={@name} class={@class} color={@color} checked={@checked} value={@value} {@rest} />
     """
   end
 
@@ -105,15 +87,7 @@ defmodule DaisyUIComponents.Input do
       |> assign_new(:value, fn -> nil end)
 
     ~H"""
-    <.select
-      id={@id}
-      name={@name}
-      class={@class}
-      color={@color}
-      ghost={@ghost}
-      multiple={@multiple}
-      {@rest}
-    >
+    <.select id={@id} name={@name} class={@class} color={@color} ghost={@ghost} multiple={@multiple} {@rest}>
       <option :if={@prompt} value="">{@prompt}</option>
       {Phoenix.HTML.Form.options_for_select(@options, @value)}
     </.select>
@@ -127,7 +101,9 @@ defmodule DaisyUIComponents.Input do
       |> assign_new(:value, fn -> nil end)
 
     ~H"""
-    <.textarea id={@id} name={@name} class={@class} color={@color} ghost={@ghost} {@rest}>{Phoenix.HTML.Form.normalize_value(@type, @value)}</.textarea>
+    <.textarea id={@id} name={@name} class={@class} color={@color} ghost={@ghost} {@rest}>
+      {Phoenix.HTML.Form.normalize_value(@type, @value)}
+    </.textarea>
     """
   end
 

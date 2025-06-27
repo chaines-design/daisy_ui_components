@@ -54,12 +54,7 @@ defmodule Storybook.Examples.TableInsert do
           Create new user
           <:subtitle>This won't be persisted into DB, memory only</:subtitle>
         </.header>
-        <.simple_form
-          :let={f}
-          for={%{}}
-          as={:user}
-          phx-submit={JS.push("save_user") |> hide_modal("new-user-modal")}
-        >
+        <.simple_form :let={f} for={%{}} as={:user} phx-submit={JS.push("save_user") |> hide_modal("new-user-modal")}>
           <.input field={f[:first_name]} label="First name" />
           <.input field={f[:last_name]} label="Last name" />
           <:actions>

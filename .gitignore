@@ -30,3 +30,6 @@ daisy_ui_components-*.tar
 /priv/plts/*.plt.hash
 
 .env
+
+.idea
+*.iml

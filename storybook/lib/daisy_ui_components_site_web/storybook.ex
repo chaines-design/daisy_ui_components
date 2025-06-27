@@ -6,5 +6,9 @@ defmodule DaisyUIComponentsSiteWeb.Storybook do
     css_path: "/assets/storybook.css",
     js_path: "/assets/storybook.js",
     title: "Phoenix + DaisyUI",
-    sandbox_class: "daisy-ui-components-site-web"
+    sandbox_class: "daisy-ui-components-site-web",
+    #
+    # Show the color mode toggle in the top right corner of the storybook
+    # https://hexdocs.pm/phoenix_storybook/color_modes.html#setup
+    color_mode: true
 end

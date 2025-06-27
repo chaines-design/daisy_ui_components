@@ -68,8 +68,7 @@ defmodule DaisyUIComponents.Form do
     values: ~w(checkbox color date datetime-local email file hidden month number password
                range radio search select tel text textarea time url week)
 
-  attr :field, Phoenix.HTML.FormField,
-    doc: "a form field struct retrieved from the form, for example: @form[:email]"
+  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :class, :string, default: nil
   attr :errors, :list, default: []
@@ -78,8 +77,7 @@ defmodule DaisyUIComponents.Form do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
-  attr :rest, :global,
-    include: ~w(autocomplete cols disabled form list max maxlength min minlength
+  attr :rest, :global, include: ~w(autocomplete cols disabled form list max maxlength min minlength
                 pattern placeholder readonly required rows size step)
 
   slot :inner_block
@@ -107,15 +105,7 @@ defmodule DaisyUIComponents.Form do
     <.fieldset class="mt-2">
       <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
       <.fieldset_label for={@id}>
-        <.input
-          id={@id}
-          type="checkbox"
-          name={@name}
-          value="true"
-          checked={@checked}
-          class={@class}
-          {@rest}
-        />
+        <.input id={@id} type="checkbox" name={@name} value="true" checked={@checked} class={@class} {@rest} />
 
         {@label}
       </.fieldset_label>
@@ -135,16 +125,7 @@ defmodule DaisyUIComponents.Form do
     <.fieldset class="mt-2">
       <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
       <.fieldset_label for={@id}>
-        <.input
-          id={@id}
-          type="radio"
-          color={@color}
-          name={@name}
-          value="true"
-          checked={@checked}
-          class={@class}
-          {@rest}
-        />
+        <.input id={@id} type="radio" color={@color} name={@name} value="true" checked={@checked} class={@class} {@rest} />
 
         {@label}
       </.fieldset_label>
@@ -182,7 +163,16 @@ defmodule DaisyUIComponents.Form do
       <.fieldset_label for={@id}>
         {@label}
       </.fieldset_label>
-      <.input id={@id} type="textarea" name={@name} color={@color} class={[@class, "w-full"]} prompt={@prompt} value={@value} {@rest} />
+      <.input
+        id={@id}
+        type="textarea"
+        name={@name}
+        color={@color}
+        class={[@class, "w-full"]}
+        prompt={@prompt}
+        value={@value}
+        {@rest}
+      />
       <.error :for={msg <- @errors}>{msg}</.error>
     </.fieldset>
     """
@@ -211,8 +201,7 @@ defmodule DaisyUIComponents.Form do
   @doc """
   Generates a generic error message.
   """
-  attr :field, Phoenix.HTML.FormField,
-    doc: "a form field struct retrieved from the form, for example: @form[:email]"
+  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   slot :inner_block
 

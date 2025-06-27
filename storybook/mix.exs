@@ -41,12 +41,7 @@ defmodule DaisyUIComponentsSite.MixProject do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
       {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
+       github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
@@ -54,8 +49,7 @@ defmodule DaisyUIComponentsSite.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:phoenix_storybook, "~> 0.8"},
-      {:daisy_ui_components, "~> 0.8"}
-      # {:daisy_ui_components, path: "../"}
+      {:daisy_ui_components, path: "../"}
     ]
   end
 
