@@ -4,11 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.8.6 - 2025-06-01
+
 ### Added
 
 - Accordion component
 - Collapse component
 - Custom installer to add a copy of this library components into your project
+- Checkbox Group component
+- Checkbox Group storybook
+- Radio Group component
+- Radio Group storybook
 
 ### Changed
 

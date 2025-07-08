@@ -1,11 +1,12 @@
 defmodule Storybook.Components.NavPanel do
   use PhoenixStorybook.Story, :component
   alias DaisyUIComponents.NavPanel
+  alias DaisyUIComponents.Menu
 
   def function, do: &NavPanel.nav_panel/1
 
   def imports,
-    do: []
+    do: [{Menu, menu: 1}]
 
   def variations do
     [
@@ -16,8 +17,8 @@ defmodule Storybook.Components.NavPanel do
           id: "nav-panel",
           current_url: "/some-url",
           nav_items: [
-            {"Navigation Item 1", "/"},
-            {"Navigation Item 2", "/"}
+            {"Navigation Item 1", "/some-url"},
+            {"Navigation Item 2", "/another-url"}
           ]
         }
       },
@@ -29,8 +30,8 @@ defmodule Storybook.Components.NavPanel do
           current_url: "/some-url",
           logo_image: "/images/logo.svg",
           nav_items: [
-            {"Navigation Item 1", "/"},
-            {"Navigation Item 2", "/"}
+            {"Navigation Item 1", "/some-url"},
+            {"Navigation Item 2", "/another-url"}
           ]
         }
       }

@@ -5,14 +5,18 @@
 @source "../css";
 @source "../js";
 @source "../../storybook";
-@source "../../deps/daisy_ui_components";
+
+/* Pull in classes from the code in the daisy_ui_components/lib dir: */
+@source "../../../lib/";
+
+
+/* Use the following if you're using the github (rather than local) daisy_ui_components: */
+/* @source "../../deps/daisy_ui_components"; */
 
 @plugin "../vendor/heroicons";
-@plugin "../node_modules/daisyui" {
-  /* In practice, you will likely ship only with two themes, as below: */
-  /* themes: light --default, dark --prefersdark; */
-  themes: all;
-}
+@plugin "../vendor/daisyui";
+
+@import "../../../assets/css/daisy_ui_colors.css";
 
 @custom-variant phx-click-loading ([".phx-click-loading&", ".phx-click-loading &"]);
 @custom-variant phx-submit-loading ([".phx-submit-loading&", ".phx-submit-loading &"]);

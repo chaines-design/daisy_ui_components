@@ -44,12 +44,14 @@ defmodule DaisyUIComponents do
     quote do
       import DaisyUIComponents.Accordion
       import DaisyUIComponents.Alert
+      import DaisyUIComponents.ApplicationLayout
       import DaisyUIComponents.Avatar
       import DaisyUIComponents.Back
       import DaisyUIComponents.Badge
       import DaisyUIComponents.Breadcrumbs
       import DaisyUIComponents.Button
       import DaisyUIComponents.Card
+      import DaisyUIComponents.CardColumn
       import DaisyUIComponents.Checkbox
       import DaisyUIComponents.Collapse
       import DaisyUIComponents.Drawer
@@ -76,6 +78,7 @@ defmodule DaisyUIComponents do
       import DaisyUIComponents.Radio
       import DaisyUIComponents.Range
       import DaisyUIComponents.Select
+      import DaisyUIComponents.Sheet
       import DaisyUIComponents.Stat
       import DaisyUIComponents.Swap
       import DaisyUIComponents.Table

@@ -46,9 +46,13 @@ defmodule DaisyUIComponentsSite.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
+      {:dns_cluster, "~> 0.2"},
       {:bandit, "~> 1.2"},
-      {:phoenix_storybook, "~> 0.8"},
+      # When actively modifying phoenix_storybook code use this:
+      # {:phoenix_storybook, path: "../../phoenix_storybook"},
+      # The MO fork of phoenix_storybook contains the theme selector for DaisyUI
+      # (i.e., it sets <html data-theme="light" /> or <html data-theme="dark" />
+      {:phoenix_storybook, github: "mechanical-orchard/phoenix_storybook"},
       {:daisy_ui_components, path: "../"}
     ]
   end
@@ -70,7 +74,8 @@ defmodule DaisyUIComponentsSite.MixProject do
         "tailwind daisy_ui_components_site",
         "tailwind storybook",
         "esbuild daisy_ui_components_site",
-        "esbuild storybook"
+        "esbuild storybook",
+        "dev.storybook"
       ],
       "assets.deploy": [
         "tailwind daisy_ui_components_site --minify",

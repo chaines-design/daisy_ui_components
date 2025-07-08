@@ -1,6 +1,6 @@
 defmodule DaisyUIComponents.NavPanel do
   use DaisyUIComponents, :component
-  import DaisyUIComponents.List
+  import DaisyUIComponents.Menu
 
   @doc """
   Renders the navigation panel component. `current_url` is used to highlight the current nav item.
@@ -24,24 +24,24 @@ defmodule DaisyUIComponents.NavPanel do
     <div
       id={@id}
       class={[
-        "pt-6 flex flex-col px-4 h-full border-r border-zinc-200 w-64 min-w-64 justify-start",
+        "pt-6 flex flex-col px-4 min-h-full border-r border-base-300 w-64 min-w-64 justify-start",
         "transition-all duration-300 ease-in-out"
       ]}
       phx-update="ignore"
     >
-      <.link :if={@logo_image} navigate="/">
-        <img src={@logo_image} class="-ml-6 -mt-6" />
-      </.link>
-      <.list :for={{name, url} <- @nav_items}>
-        <:item>
-          <.link
-            navigate={url}
-            class={"#{if URI.parse(@current_url).path == url, do: "bg-background-inverse-primary text-content-inverse-primary"} group flex gap-x-3 rounded-md p-2 text-lg hover:bg-background-inverse-primary hover:text-content-inverse-primary"}
-          >
-            {name}
+      <.menu class="flex flex-1 flex-col space-y-1 text-nowrap">
+        <:item :if={@logo_image}>
+          <.link navigate="/">
+            <img src={@logo_image} class="w-full" />
           </.link>
         </:item>
-      </.list>
+        <:item
+          :for={{name, url} <- @nav_items}
+          class={"group flex gap-x-3 rounded-md p-2 text-lg #{if URI.parse(@current_url).path == url, do: "bg-background-inverse-primary text-content-inverse-primary"} hover:bg-background-inverse-primary hover:text-content-inverse-primary"}
+        >
+          <.link navigate={url}>{name}</.link>
+        </:item>
+      </.menu>
     </div>
     """
   end

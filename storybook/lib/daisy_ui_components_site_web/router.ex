@@ -23,6 +23,7 @@ defmodule DaisyUIComponentsSiteWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/home", HomeLive, :home
     live_storybook("/storybook", backend_module: DaisyUIComponentsSiteWeb.Storybook)
   end
 

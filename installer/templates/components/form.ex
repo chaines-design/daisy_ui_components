@@ -8,6 +8,7 @@ defmodule <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Form 
   import <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Fieldset
   import <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Icon
   import <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Input
+  import <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Label
 
   @doc """
   Renders a simple form.
@@ -66,7 +67,7 @@ defmodule <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Form 
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file hidden month number password
-               range radio search select tel text textarea time url week)
+               range radio search select tel text textarea time url week checkbox_group radio_group)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -124,6 +125,37 @@ defmodule <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Form 
     """
   end
 
+  def form_input(%{type: "checkbox_group"} = assigns) do
+    assigns =
+      assigns
+      |> assign(:multiple, true)
+      |> assign(:name, assigns.name <> "[]")
+      |> assign(:value, assigns.value || [])
+
+    ~H"""
+    <.fieldset class="mt-2">
+      <.fieldset_label>{@label}</.fieldset_label>
+      <input type="hidden" name={@name} value="" disabled={@rest[:disabled]} />
+      <div :for={{{label, value}, index} <- Enum.with_index(@options)}>
+        <.label for={"#{@id}-#{index}"}>
+          <.input
+            id={"#{@id}-#{index}"}
+            type="checkbox"
+            name={@name}
+            value={value}
+            checked={value in @value}
+            class={@class}
+            {@rest}
+          />
+
+          {label}
+        </.label>
+      </div>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </.fieldset>
+    """
+  end
+
   def form_input(%{type: "radio"} = assigns) do
     assigns =
       assigns
@@ -148,6 +180,30 @@ defmodule <%= if not @dev do @web_namespace <> "." end %>DaisyUIComponents.Form 
 
         {@label}
       </.fieldset_label>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </.fieldset>
+    """
+  end
+
+  def form_input(%{type: "radio_group"} = assigns) do
+    ~H"""
+    <.fieldset class="mt-2">
+      <.fieldset_label>{@label}</.fieldset_label>
+      <div :for={{{label, value}, index} <- Enum.with_index(@options)}>
+        <.label for={"#{@id}-#{index}"}>
+          <.input
+            id={"#{@id}-#{index}"}
+            type="radio"
+            name={@name}
+            value={value}
+            checked={to_string(value) == to_string(@value)}
+            class={@class}
+            {@rest}
+          />
+
+          {label}
+        </.label>
+      </div>
       <.error :for={msg <- @errors}>{msg}</.error>
     </.fieldset>
     """

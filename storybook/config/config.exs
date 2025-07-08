@@ -32,7 +32,7 @@ config :esbuild,
   ],
   storybook: [
     args:
-      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+      ~w(js/storybook.js --bundle --target=es2022 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]

@@ -9,7 +9,8 @@ import Config
 config :daisy_ui_components_site, DaisyUIComponentsSiteWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  # IMPORTANT: note that this is 4010, not 4000, so that Storybook can be run at the same time as the app.
+  http: [ip: {127, 0, 0, 1}, port: 4010],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
