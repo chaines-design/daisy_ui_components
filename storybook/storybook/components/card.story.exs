@@ -13,6 +13,23 @@ defmodule Storybook.Components.Card do
   def variations do
     [
       %Variation{
+        id: :card_with_no_image,
+        attributes: %{
+          class: "bg-base-200 w-96 shadow-md"
+        },
+        slots: [
+          """
+          <:card_title>Shoes!</:card_title>
+          <:card_body>
+            <p>If a dog chews shoes whose shoes does he choose?</p>
+          </:card_body>
+          <:card_actions class="justify-end">
+            <button class="btn btn-primary">Buy Now</button>
+          </:card_actions>
+          """
+        ]
+      },
+      %Variation{
         id: :card,
         attributes: %{
           class: "bg-base-200 w-96 shadow-xl"
@@ -99,23 +116,6 @@ defmodule Storybook.Components.Card do
               src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
               alt="Shoes" />
           </figure>
-          <:card_title>Shoes!</:card_title>
-          <:card_body>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-          </:card_body>
-          <:card_actions class="justify-end">
-            <button class="btn btn-primary">Buy Now</button>
-          </:card_actions>
-          """
-        ]
-      },
-      %Variation{
-        id: :card_with_no_image,
-        attributes: %{
-          class: "bg-base-200 w-96 shadow-xl"
-        },
-        slots: [
-          """
           <:card_title>Shoes!</:card_title>
           <:card_body>
             <p>If a dog chews shoes whose shoes does he choose?</p>
