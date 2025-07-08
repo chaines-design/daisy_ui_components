@@ -37,6 +37,13 @@ defmodule Storybook.Components.Button do
         slots: ["Button"]
       },
       %Variation{
+        id: :my_awesome_variation,
+        attributes: %{
+          outline: true
+        },
+        slots: ["This is AWESOME"]
+      },
+      %Variation{
         id: :active,
         attributes: %{
           active: true
