@@ -16,7 +16,7 @@
      --color-primary-content: oklch(0.282 0.091 267.935); /* blue-950 */
      --color-secondary: oklch(0.74 0.238 322.16); /* fuchsia-400 */
      --color-secondary-content: oklch(0.401 0.17 325.612); /* fuchsia-900 */
-     --color-accent: oklch(0.702 0.183 293.541); /* violet-400 */
+     --color-accent: oklch(0.811 0.111 293.571); /* violet-300 */
      --color-accent-content: oklch(0.38 0.189 293.745); /* violet-900 */
      --color-neutral: oklch(0.984 0.003 247.858); /* slate-50 */
      --color-neutral-content: oklch(0.279 0.041 260.031); /* slate-800 */
@@ -51,18 +51,18 @@
      --color-primary-content: oklch(0.97 0.014 254.604); /* blue-50 */
      --color-secondary: oklch(0.667 0.295 322.15); /* fucshia-500 */
      --color-secondary-content: oklch(0.977 0.017 320.058); /* fucshia-50 */
-     --color-accent: oklch(0.606 0.25 292.717); /* violet-500 */
-     --color-accent-content: oklch(0.969 0.016 293.756); /* violet-50 */
+     --color-accent: oklch(0.811 0.111 293.571); /* violet-300 */
+     --color-accent-content: oklch(0.38 0.189 293.745); /* violet-900 */
      --color-neutral: oklch(0.279 0.041 260.031); /* slate-800 */
      --color-neutral-content: oklch(0.984 0.003 247.858); /* slate-50 */
-     --color-info: oklch(0.546 0.245 262.881); /* blue-600 */
-     --color-info-content: oklch(0.97 0.014 254.604); /* blue-50 */
-     --color-success: oklch(0.596 0.145 163.225); /* emerald-600 */
-     --color-success-content: oklch(0.979 0.021 166.113); /* emerald-50 */
-     --color-warning: oklch(0.666 0.179 58.318); /* amber-600 */
-     --color-warning-content: oklch(0.97 0.014 58.318); /* amber-50 */
-     --color-error: oklch(0.577 0.245 27.325); /* red-600 */
-     --color-error-content: oklch(0.971 0.013 17.38); /* red-50 */
+     --color-info: oklch(0.707 0.165 254.624); /* blue-400 */
+     --color-info-content: oklch(0.282 0.091 267.935); /* blue-950 */
+     --color-success: oklch(0.765 0.177 163.223); /* emerald-400 */
+     --color-success-content: oklch(0.378 0.077 168.94); /* emerald-900 */
+     --color-warning: oklch(0.828 0.189 84.429); /* amber-400 */
+     --color-warning-content: oklch(0.414 0.112 45.904); /* amber-900 */
+     --color-error: oklch(0.704 0.191 22.216); /* red-400 */
+     --color-error-content: oklch(0.258 0.092 26.042); /* red-950 */
      --radius-selector: 0.25rem;
      --radius-field: 0.25rem;
      --radius-box: 0.5rem;
