@@ -17,7 +17,7 @@ defmodule Storybook.Components.Alert do
         id: :info,
         slots: [
           """
-          <.icon name="hero-exclamation-circle" />
+          <.icon name="hero-information-circle" class="text-primary"/>
           """,
           "12 unread messages. Tap to see."
         ]
@@ -29,7 +29,7 @@ defmodule Storybook.Components.Alert do
         },
         slots: [
           """
-          <.icon name="hero-exclamation-circle" />
+          <.icon name="hero-information-circle" />
           """,
           "12 unread messages. Tap to see."
         ]
@@ -41,7 +41,7 @@ defmodule Storybook.Components.Alert do
         },
         slots: [
           """
-          <.icon name="hero-exclamation-circle" />
+          <.icon name="hero-check-circle" />
           """,
           "12 unread messages. Tap to see."
         ]
@@ -53,7 +53,7 @@ defmodule Storybook.Components.Alert do
         },
         slots: [
           """
-          <.icon name="hero-exclamation-circle" />
+          <.icon name="hero-exclamation-triangle" />
           """,
           "12 unread messages. Tap to see."
         ]
@@ -74,7 +74,7 @@ defmodule Storybook.Components.Alert do
         id: :alert_with_buttons,
         slots: [
           """
-          <.icon name="hero-exclamation-circle" />
+          <.icon name="hero-information-circle" class="text-primary" />
           <span>we use cookies for no reason.</span>
           <div>
             <.button size="sm">Deny</.button>
@@ -87,7 +87,7 @@ defmodule Storybook.Components.Alert do
         id: :alert_with_title_and_description,
         slots: [
           """
-          <.icon name="hero-exclamation-circle" />
+          <.icon name="hero-information-circle" class="text-primary" />
           <div>
             <h3 class="font-bold">New message!</h3>
             <div class="text-xs">You have 1 unread message</div>
