@@ -43,7 +43,7 @@ defmodule Storybook.Components.Alert do
           """
           <.icon name="hero-check-circle" />
           """,
-          "12 unread messages. Tap to see."
+          "12 files uploaded successfully."
         ]
       },
       %Variation{
@@ -55,7 +55,7 @@ defmodule Storybook.Components.Alert do
           """
           <.icon name="hero-exclamation-triangle" />
           """,
-          "12 unread messages. Tap to see."
+          "You're now in the danger zone."
         ]
       },
       %Variation{
@@ -67,7 +67,7 @@ defmodule Storybook.Components.Alert do
           """
           <.icon name="hero-exclamation-circle" />
           """,
-          "12 unread messages. Tap to see."
+          "Upload failed.  Please try again."
         ]
       },
       %Variation{

@@ -29,19 +29,40 @@ defmodule Storybook.Components.Button do
             }
           end
       },
-      %Variation{
+      %VariationGroup{
+        id: :soft,
+        variations:
+          for color <- Utils.colors() ++ ["neutral"] do
+            %Variation{
+              id: String.to_atom(color),
+              attributes: %{
+                color: color,
+                soft: true
+              },
+              slots: [String.capitalize(color)]
+            }
+          end
+      },
+      %VariationGroup{
         id: :outline,
-        attributes: %{
-          outline: true
-        },
-        slots: ["Button"]
+        variations:
+          for color <- Utils.colors() ++ ["neutral"] do
+            %Variation{
+              id: String.to_atom(color),
+              attributes: %{
+                color: color,
+                outline: true
+              },
+              slots: [String.capitalize(color)]
+            }
+          end
       },
       %Variation{
-        id: :my_awesome_variation,
+        id: :link,
         attributes: %{
-          outline: true
+          link: true
         },
-        slots: ["This is AWESOME"]
+        slots: ["Link"]
       },
       %Variation{
         id: :active,
