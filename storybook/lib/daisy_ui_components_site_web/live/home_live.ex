@@ -2,44 +2,34 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
   @moduledoc false
   use DaisyUIComponentsSiteWeb, :live_view
 
-  def render(assigns) do
-    ~H"""
-    <div>
-    <.alert id="alert-single-info">
-  <.icon name="hero-exclamation-circle" />
-  12 unread messages. Tap to see.
-</.alert>
-<.card class="bg-base-200 w-96 shadow-xl">
-  <figure>
-    <img
-      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-      alt="Shoes" />
-  </figure>
-  <:card_title>Shoes!</:card_title>
-  <:card_body>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
-  </:card_body>
-  <:card_actions class="justify-end">
-    <button class="btn btn-primary">Buy Now</button>
-  </:card_actions>
-</.card>
-<.hero class="bg-base-200">
-  <:content class="text-center">
-    <div class="max-w-md">
-      <h1 class="text-5xl font-bold">Hello there</h1>
-      <p class="py-6">
-        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-        quasi. In deleniti eaque aut repudiandae et a id nisi.
-      </p>
-      <.button color="primary">Get Started</.button>
-    </div>
-  </:content>
-</.hero>
-
-      <h1>Home</h1>
-      <.button class="btn btn-primary">Click me</.button>
-    </div>
-    """
+      def render(assigns) do
+      ~H"""
+      <div class="flex flex-col justify-between h-screen w-56 bg-base-200">
+        <div class="pt-6">
+          <%!-- Added the Tailwind arbitrary selector [&_li>a]:w-full to force all anchor tags to be full width --%>
+          <.menu class="bg-transparent w-full [&_li>a]:w-full">
+            <:item class="menu-title text-base-content">Rose Johnson</:item>
+            <:item><a><.icon name="hero-home" class="h-5 w-5" /> Home</a></:item>
+            <:item><a><.icon name="hero-sun" class="h-5 w-5" /> Theme</a></:item>
+            <:item class="menu-title text-base-content pt-8">Taxes</:item>
+            <:item><a><.icon name="hero-building-storefront" class="h-5 w-5" /> Businesses</a></:item>
+            <:item><a><.icon name="hero-currency-dollar" class="h-5 w-5" /> Payments</a></:item>
+            <:item><a><.icon name="hero-folder-open" class="h-5 w-5" /> Records</a></:item>
+            <:item><a><.icon name="hero-document-chart-bar" class="h-5 w-5" /> Reports</a></:item>
+            <:item class="menu-title text-base-content pt-8">Configuration</:item>
+            <:item><a><.icon name="hero-calendar" class="h-5 w-5" /> Calendars</a></:item>
+            <:item><a><.icon name="hero-user-circle" class="h-5 w-5" /> Users</a></:item>
+            <:item><a><.icon name="hero-cog-6-tooth" class="h-5 w-5" /> Configuration</a></:item>
+          </.menu>
+        </div>
+        <div class="py-2">
+          <%!-- Added the Tailwind arbitrary selector [&_li>a]:w-full to force all anchor tags to be full width --%>
+          <.menu class="bg-transparent w-full [&_li>a]:w-full">
+            <:item><a><.icon name="hero-arrow-right-on-rectangle" class="h-5 w-5" /> Log Out</a></:item>
+          </.menu>
+        </div>
+      </div>
+      """
   end
 
   def mount(_params, _session, socket) do
