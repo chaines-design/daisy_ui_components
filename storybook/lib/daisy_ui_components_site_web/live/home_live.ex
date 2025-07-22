@@ -73,13 +73,13 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
                      <div class="col-span-2 space-y-4">
                        <!-- Name Field -->
                        <div>
-                         <.fieldset class="font-medium text-sm">Location Name</.fieldset>
+                         <.label class="label-text font-medium text-sm text-base-content block">Location Name</.label>
                          <.text_input class="input input-bordered w-full mt-1" placeholder="Enter location name" />
                        </div>
 
                        <!-- Start Date Field -->
                        <div>
-                         <.fieldset class="fieldset-legend font-medium text-sm">Start Date</.fieldset>
+                         <.label class="label-text font-medium text-sm text-base-content block">Start Date</.label>
                          <.text_input type="date" class="input input-bordered w-60 mt-1" />
                        </div>
                      </div>
@@ -96,24 +96,24 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
                      <div class="col-span-2 space-y-4">
                        <!-- Address Line 1 -->
                        <div>
-                         <.fieldset class="label-text font-medium text-sm">Address Line 1</.fieldset>
+                         <.label class="label-text font-medium text-sm text-base-content block">Address Line 1</.label>
                          <.text_input class="input input-bordered w-full mt-1" placeholder="Street address" />
                        </div>
 
                        <!-- Address Line 2 -->
                        <div>
-                         <.fieldset class="label-text font-medium text-sm">Address Line 2 <span class="text-base-content/50">(Optional)</span></.fieldset>
+                         <.label class="label-text font-medium text-sm text-base-content block">Address Line 2 <span class="text-base-content/50">(Optional)</span></.label>
                          <.text_input class="input input-bordered w-full mt-1" placeholder="Apartment, suite, etc." />
                        </div>
 
                        <!-- City, State, Zip Row -->
                        <div class="grid grid-cols-3 gap-4">
                          <div>
-                           <.fieldset class="label-text font-medium text-sm">City</.fieldset>
+                           <.label class="label-text font-medium text-sm text-base-content block">City</.label>
                            <.text_input class="input input-bordered w-full mt-1" placeholder="City" />
                          </div>
                          <div>
-                           <.fieldset class="label-text font-medium text-sm">State</.fieldset>
+                           <.label class="label-text font-medium text-sm text-base-content block">State</.label>
                            <.select class="select select-bordered w-full mt-1">
                              <option disabled selected>Select state</option>
                              <option>CA</option>
@@ -123,7 +123,7 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
                            </.select>
                          </div>
                          <div>
-                           <.fieldset class="label-text font-medium text-sm">Zip Code</.fieldset>
+                           <.label class="label-text font-medium text-sm text-base-content block">Zip Code</.label>
                            <.text_input class="input input-bordered w-full mt-1" placeholder="12345" />
                          </div>
                        </div>
@@ -144,11 +144,11 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
                          <h4 class="text-sm">Is this a <a class="text-primary cursor-pointer">commercial use</a> location?</h4>
                          <div class="flex gap-6">
                            <label class="flex items-center gap-2 cursor-pointer">
-                             <.radio name="question1" value="yes" class="radio-sm radio-primary" />
+                             <.radio name="question1" value="yes" class="radio-sm" />
                              <span class="label-text text-sm">Yes</span>
                            </label>
                            <label class="flex items-center gap-2 cursor-pointer">
-                             <.radio name="question1" value="no" class="radio-sm radio-primary" />
+                             <.radio name="question1" value="no" class="radio-sm " />
                              <span class="label-text text-sm">No</span>
                            </label>
                          </div>
@@ -159,11 +159,11 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
                          <h4 class="text-sm">Will this location be operated from a <a class="text-primary cursor-pointer">home or other residential location?</a></h4>
                          <div class="flex gap-6">
                            <label class="flex items-center gap-2 cursor-pointer">
-                             <.radio name="question2" value="yes" class="radio-sm radio-primary" />
+                             <.radio name="question2" value="yes" class="radio-sm" />
                              <span class="label-text text-sm">Yes</span>
                            </label>
                            <label class="flex items-center gap-2 cursor-pointer">
-                             <.radio name="question2" value="no" class="radio-sm radio-primary" />
+                             <.radio name="question2" value="no" class="radio-sm" />
                              <span class="label-text text-sm">No</span>
                            </label>
                          </div>
