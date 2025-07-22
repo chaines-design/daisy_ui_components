@@ -38,6 +38,48 @@ window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
 // connect if there are any LiveViews on the page
 liveSocket.connect();
 
+// Theme switcher functionality
+function setTheme(theme) {
+  const html = document.documentElement;
+  
+  if (theme === 'system') {
+    // Use system preference
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    html.setAttribute('data-theme', systemTheme);
+    localStorage.setItem('theme', 'system');
+  } else {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+}
+
+// Initialize theme on page load
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'system';
+  setTheme(savedTheme);
+}
+
+// Listen for system theme changes when 'system' is selected
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'system') {
+    setTheme('system');
+  }
+});
+
+// Handle theme switch events from LiveView
+window.addEventListener('phx:set-theme', (e) => {
+  setTheme(e.detail.theme);
+});
+
+// Handle setup event from LiveView
+window.addEventListener('setup-theme-switcher', () => {
+  initTheme();
+});
+
+// Initialize theme when page loads
+document.addEventListener('DOMContentLoaded', initTheme);
+
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session

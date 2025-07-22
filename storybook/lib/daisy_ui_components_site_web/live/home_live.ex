@@ -2,6 +2,8 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
   @moduledoc false
   use DaisyUIComponentsSiteWeb, :live_view
 
+  import DaisyUIComponents.ThemeToggle
+
       def render(assigns) do
       ~H"""
       <div class="flex h-screen">
@@ -34,12 +36,20 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
 
         <!-- Main Content Area -->
         <div class="flex-1 bg-base-200 p-6">
-          <%!-- Nav Breadcrumbs --%>
-          <.breadcrumbs class="text-xs pt-5 px-6">
-            <:item class="text-primary/70" path="/">Taxes</:item>
-            <:item path="/businesses">Businesses</:item>
-            <:item path="/newbusiness">Register a Business</:item>
-          </.breadcrumbs>
+          <!-- Header with Breadcrumbs and Theme Toggle -->
+          <div class="flex justify-between items-start mb-2">
+            <%!-- Nav Breadcrumbs --%>
+            <.breadcrumbs class="text-xs pt-5 px-6">
+              <:item class="text-primary/70" path="/">Taxes</:item>
+              <:item path="/businesses">Businesses</:item>
+              <:item path="/newbusiness">Register a Business</:item>
+            </.breadcrumbs>
+
+            <!-- Theme Toggle -->
+            <div class="pt-4 pr-4">
+              <.theme_toggle />
+            </div>
+          </div>
 
           <!-- Business Registration Form -->
           <div class="flex flex-col gap-4 pt-8">
@@ -189,6 +199,8 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
   end
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok,
+     socket
+     |> push_event("setup-theme-switcher", %{})}
   end
 end
