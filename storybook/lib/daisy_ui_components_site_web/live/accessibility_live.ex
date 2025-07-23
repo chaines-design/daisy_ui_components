@@ -16,8 +16,9 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     base_indices = %{
       {"Alert", "Soft"} => 0,
       {"Alert", "Standard"} => 10,
-      {"Badge", "Standard"} => 20,
-      {"Button", "Standard"} => 30
+      {"Alert", "Outline"} => 20,
+      {"Badge", "Standard"} => 30,
+      {"Button", "Standard"} => 40
     }
 
     base_index = Map.get(base_indices, {component_name, style}, 0)
@@ -89,6 +90,38 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         }
       ],
       issue: "Alert color variants may have contrast issues with text content on colored backgrounds"
+    },
+    %{
+      component: "Alert",
+      style: "Outline",
+      variants: [
+        %{
+          name: "Default",
+          class: "alert-outline",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Info",
+          class: "alert-outline alert-info",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Success",
+          class: "alert-outline alert-success",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Warning",
+          class: "alert-outline alert-warning",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Error",
+          class: "alert-outline alert-error",
+          test_element: "alert text content"
+        }
+      ],
+      issue: "Alert outline variants may have insufficient contrast between border/text and background"
     },
     %{
       component: "Badge",
