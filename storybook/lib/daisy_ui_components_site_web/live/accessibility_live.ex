@@ -138,23 +138,23 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
 
       <!-- Test Results Summary -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div class="stat bg-base-200 rounded-lg">
+        <div class="stat bg-base-200 rounded-lg py-8">
           <div class="stat-title text-sm">Total Tests</div>
           <div class="stat-value text-2xl" id="total-tests">{Enum.sum(Enum.map(@high_risk_components, fn comp -> length(comp.variants) end))}</div>
           <div class="stat-desc">High-risk variants</div>
         </div>
-        <div class="stat bg-success/10 rounded-lg">
-          <div class="stat-title text-sm">Passing</div>
+        <div class="stat bg-success/10 rounded-lg py-8">
+          <div class="stat-title text-sm text-success">Passing</div>
           <div class="stat-value text-2xl text-success" id="passing-count">-</div>
           <div class="stat-desc">WCAG AA compliant</div>
         </div>
-        <div class="stat bg-warning/10 rounded-lg">
-          <div class="stat-title text-sm">Borderline</div>
+        <div class="stat bg-warning/10 rounded-lg py-8">
+          <div class="stat-title text-sm text-warning">Borderline</div>
           <div class="stat-value text-2xl text-warning" id="borderline-count">-</div>
           <div class="stat-desc">Close to threshold</div>
         </div>
-        <div class="stat bg-error/10 rounded-lg">
-          <div class="stat-title text-sm">Failing</div>
+        <div class="stat bg-error/10 rounded-lg py-8">
+          <div class="stat-title text-sm text-error">Failing</div>
           <div class="stat-value text-2xl text-error" id="failing-count">-</div>
           <div class="stat-desc">Below WCAG AA</div>
         </div>
@@ -176,49 +176,54 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         </div>
       </div>
 
-                  <!-- Component Tests -->
-      <div class="space-y-8">
-        <div :for={component <- @high_risk_components} class="card bg-base-200 shadow">
-          <div class="card-body">
-            <!-- Component Header -->
-            <div class="mb-6">
-              <h3 class="text-xl font-semibold">{component.component} - {component.style}</h3>
-              <p class="text-sm text-base-content/70 mt-1">{component.issue}</p>
-            </div>
+                        <!-- Component Tests -->
+      <div class="space-y-15">
+        <div :for={{component, component_index} <- Enum.with_index(@high_risk_components)}>
+          <div class="card bg-base-100">
+            <div class="card-body bor">
+              <!-- Component Header -->
+              <div class="mb-6">
+                <h3 class="text-base uppercase font-semibold">{component.component} - {component.style}</h3>
+                <p class="text-xs text-base-content/70 mt-1">{component.issue}</p>
+              </div>
 
-                        <!-- Variant Test Sections -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div :for={{variant, variant_index} <- Enum.with_index(component.variants)}
-                   class="border border-base-300 rounded-lg p-4 bg-base-100">
-                <!-- Class and Results Header -->
-                <div class="flex justify-between items-center mb-4">
-                  <code class="text-xs bg-base-300 px-3 py-2 rounded font-mono">{variant.class}</code>
-                  <div
-                    class="contrast-result hidden"
-                    id={"result-#{get_test_index(component.component, component.style, variant_index)}"}
-                    data-component-index={get_test_index(component.component, component.style, variant_index)}
-                  >
-                    <div class="flex items-center gap-2">
-                      <div class="contrast-status w-3 h-3 rounded-full"></div>
-                      <span class="contrast-ratio text-sm font-mono"></span>
-                      <span class="wcag-status text-xs font-medium px-2 py-1 rounded"></span>
+              <!-- Variant Test Sections -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div :for={{variant, variant_index} <- Enum.with_index(component.variants)}
+                     class="rounded-lg p-4 bg-base-100 shadow-sm">
+                  <!-- Class and Results Header -->
+                  <div class="flex justify-between items-center mb-4">
+                    <code class="text-xs bg-base-300 px-3 py-2 rounded font-mono">{variant.class}</code>
+                    <div
+                      class="contrast-result hidden"
+                      id={"result-#{get_test_index(component.component, component.style, variant_index)}"}
+                      data-component-index={get_test_index(component.component, component.style, variant_index)}
+                    >
+                      <div class="flex items-center gap-2">
+                        <div class="contrast-status w-3 h-3 rounded-full"></div>
+                        <span class="contrast-ratio text-sm font-mono"></span>
+                        <span class="wcag-status text-xs font-medium px-2 py-1 rounded"></span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Component Instance -->
-                <div
-                  class="component-test"
-                  id={"test-#{get_test_index(component.component, component.style, variant_index)}"}
-                  data-component={"#{component.component}-#{component.style}"}
-                  data-test-element={variant.test_element}
-                  data-debug-index={get_test_index(component.component, component.style, variant_index)}
-                >
-                  {component_instance(component.component, variant)}
+                  <!-- Component Instance -->
+                  <div
+                    class="component-test"
+                    id={"test-#{get_test_index(component.component, component.style, variant_index)}"}
+                    data-component={"#{component.component}-#{component.style}"}
+                    data-test-element={variant.test_element}
+                    data-debug-index={get_test_index(component.component, component.style, variant_index)}
+                  >
+                    {component_instance(component.component, variant)}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Divider (not shown after last component) -->
+          <div :if={component_index < length(@high_risk_components) - 1} class="w-full border-t border-base-content/20 my-15"></div>
         </div>
       </div>
 
@@ -235,7 +240,7 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
               <.icon name="hero-clipboard-document-list" class="h-4 w-4" />
               Export Detailed Report
             </button>
-            <button class="btn btn-outline btn-sm" onclick="console.log('Debug info:', document.querySelectorAll('.component-test'))">
+            <button class="btn btn-outline btn-primary" onclick="console.log('Debug info:', document.querySelectorAll('.component-test'))">
               Debug Test Elements
             </button>
           </div>
