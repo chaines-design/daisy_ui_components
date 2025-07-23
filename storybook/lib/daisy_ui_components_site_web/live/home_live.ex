@@ -45,8 +45,14 @@ defmodule DaisyUIComponentsSiteWeb.HomeLive do
               <:item path="/newbusiness">Register a Business</:item>
             </.breadcrumbs>
 
-            <!-- Theme Toggle -->
-            <div class="pt-4 pr-4">
+            <!-- Theme Toggle and Navigation -->
+            <div class="flex items-center gap-4 pt-4 pr-4">
+              <.link navigate="/colors" class="btn btn-outline btn-sm">
+                <.icon name="hero-swatch" class="h-4 w-4" /> Colors
+              </.link>
+              <.link navigate="/accessibility" class="btn btn-outline btn-sm">
+                <.icon name="hero-eye" class="h-4 w-4" /> Accessibility
+              </.link>
               <.theme_toggle />
             </div>
           </div>

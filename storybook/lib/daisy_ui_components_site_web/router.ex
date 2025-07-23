@@ -24,6 +24,8 @@ defmodule DaisyUIComponentsSiteWeb.Router do
 
     get "/", PageController, :home
     live "/home", HomeLive, :home
+    live "/colors", ColorThemeLive, :colors
+    live "/accessibility", AccessibilityLive, :accessibility
     live_storybook("/storybook", backend_module: DaisyUIComponentsSiteWeb.Storybook)
   end
 
