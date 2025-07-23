@@ -11,11 +11,29 @@ export const AccessibilityChecker = {
     // Store results for export
     this.testResults = [];
     
+    // Initialize theme detection
+    this.updateThemeDisplay();
+    
     console.log('Accessibility Checker initialized');
+  },
+
+  updateThemeDisplay() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const themeDisplay = currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1);
+    
+    const themeBadge = document.getElementById('current-theme-badge');
+    if (themeBadge) {
+      themeBadge.textContent = `Testing in: ${themeDisplay} Mode`;
+    }
+    
+    console.log('Current theme detected:', currentTheme);
   },
 
   scanAllComponents() {
     console.log('Starting accessibility scan...');
+    
+    // Update theme display before starting
+    this.updateThemeDisplay();
     
     const scanButton = document.getElementById('scan-button');
     const exportButtons = [
@@ -36,13 +54,24 @@ export const AccessibilityChecker = {
     let completedTests = 0;
     const totalTests = testContainers.length;
     
+    console.log(`Found ${totalTests} tests to run`);
+    console.log('Test containers:', Array.from(testContainers).map(c => ({
+      id: c.id,
+      component: c.dataset.component,
+      debugIndex: c.dataset.debugIndex,
+      classes: c.className
+    })));
+    
     testContainers.forEach((container, index) => {
       setTimeout(() => {
-        this.testComponent(container, index, () => {
+        // Use the debug index from the data attribute instead of loop index
+        const testIndex = parseInt(container.dataset.debugIndex) || index;
+        this.testComponent(container, testIndex, () => {
           completedTests++;
           
           if (completedTests === totalTests) {
             this.updateSummaryStats();
+            
             scanButton.textContent = 'Scan All Components';
             scanButton.disabled = false;
             
@@ -54,7 +83,7 @@ export const AccessibilityChecker = {
             console.log('Accessibility scan completed');
           }
         });
-      }, index * 150); // Stagger tests to avoid overwhelming the browser
+      }, index * 100); // Stagger tests to avoid overwhelming the browser
     });
   },
 
@@ -77,7 +106,7 @@ export const AccessibilityChecker = {
     
     console.log('Element to test:', elementToTest);
     
-    // Small delay to ensure styles are fully applied
+        // Small delay to ensure styles are fully applied
     setTimeout(() => {
       // Calculate contrast ratio
       const result = this.calculateContrastRatio(elementToTest);
@@ -104,6 +133,9 @@ export const AccessibilityChecker = {
 
   findElementToTest(container, component) {
     console.log('Finding element for component:', component);
+    console.log('Container classes:', container.className);
+    console.log('Container HTML:', container.innerHTML);
+    console.log('Debug index:', container.dataset.debugIndex);
     
     // Different strategies for finding the right element to test
     let element = null;
@@ -111,6 +143,7 @@ export const AccessibilityChecker = {
     if (component.includes('Button')) {
       element = container.querySelector('button') || container.querySelector('.btn');
     } else if (component.includes('Alert')) {
+      // For alerts, we want to test the text content, not the background
       element = container.querySelector('.alert span') || container.querySelector('.alert') || container.querySelector('[role="alert"]');
     } else if (component.includes('Badge')) {
       element = container.querySelector('.badge') || container.querySelector('.badge-outline') || container.querySelector('.badge-soft');
@@ -151,6 +184,12 @@ export const AccessibilityChecker = {
     }
     
     console.log('Selected element:', element);
+    console.log('Selected element classes:', element ? element.className : 'none');
+    console.log('Selected element computed style sample:', element ? {
+      backgroundColor: window.getComputedStyle(element).backgroundColor,
+      color: window.getComputedStyle(element).color
+    } : 'none');
+    
     return element;
   },
 
@@ -238,6 +277,14 @@ export const AccessibilityChecker = {
     let backgroundColor = 'transparent';
     
     console.log('Finding background color for element:', element);
+    console.log('Element tag:', element.tagName, 'classes:', element.className);
+    
+    // Special handling for text elements inside colored containers
+    // If we're testing a span or text element, start from the parent
+    if (element.tagName === 'SPAN' && element.parentElement && element.parentElement.classList.contains('alert')) {
+      console.log('Testing alert text - starting from alert parent');
+      current = element.parentElement;
+    }
     
     // Walk up the DOM tree to find the first non-transparent background
     while (current && current !== document.documentElement) {
@@ -248,7 +295,7 @@ export const AccessibilityChecker = {
       
       if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent' && bg !== 'initial' && bg !== 'inherit') {
         backgroundColor = bg;
-        console.log('Found background color:', bg, 'on element:', current);
+        console.log('Found background color:', bg, 'on element:', current.tagName, current.className);
         break;
       }
       current = current.parentElement;
@@ -452,8 +499,13 @@ export const AccessibilityChecker = {
   },
 
   showResult(index, result, errorMessage = null) {
+    console.log(`Showing result for index ${index}`);
     const resultContainer = document.getElementById(`result-${index}`);
-    if (!resultContainer) return;
+    if (!resultContainer) {
+      console.warn(`Could not find result container for index ${index}`);
+      console.log('Available result containers:', Array.from(document.querySelectorAll('[id^="result-"]')).map(el => el.id));
+      return;
+    }
     
     resultContainer.classList.remove('hidden');
     
@@ -591,12 +643,15 @@ export const AccessibilityChecker = {
   },
 
   generateSummaryReport() {
-    const headers = ['Component', 'Status', 'Contrast Ratio', 'WCAG Threshold', 'Issue'];
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    
+    const headers = ['Component', 'Status', 'Contrast Ratio', 'WCAG Threshold', 'Theme', 'Issue'];
     const rows = this.testResults.map(result => [
       result.component,
       result.status || 'error',
       result.ratio ? `${result.ratio.toFixed(1)}:1` : 'N/A',
       result.threshold ? `${result.threshold}:1` : 'N/A',
+      currentTheme,
       result.testElement || ''
     ]);
     
@@ -604,9 +659,11 @@ export const AccessibilityChecker = {
   },
 
   generateDetailedReport() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    
     const headers = [
       'Component', 'Status', 'Contrast Ratio', 'WCAG Threshold', 'Large Text',
-      'Text Color', 'Background Color', 'Font Size', 'Font Weight', 'Issue'
+      'Text Color', 'Background Color', 'Font Size', 'Font Weight', 'Theme', 'Timestamp', 'Issue'
     ];
     
     const rows = this.testResults.map(result => [
@@ -619,6 +676,8 @@ export const AccessibilityChecker = {
       result.backgroundColor || 'N/A',
       result.fontSize ? `${result.fontSize}px` : 'N/A',
       result.fontWeight || 'N/A',
+      currentTheme,
+      new Date().toISOString(),
       result.testElement || ''
     ]);
     

@@ -1,0 +1,89 @@
+﻿Component,Class,Uses Color-Mix for Borders,Uses Color-Mix for Backgrounds/Fills,Uses Color-Mix for Shadows/Decorative,Uses Opacity,Risk Level,Notes
+Alert,.alert,No,No,Yes,None,Low,Box-shadow only
+Alert,.alert-soft,Yes,Yes,No,None,High,8% opacity background mix affects text contrast
+Avatar,,No,No,No,None,Low,No accessibility concerns
+Badge,.badge-soft,Yes,Yes,No,None,High,8% opacity background mix affects text contrast
+Breadcrumbs,,No,No,No,opacity-40 (separator),Low,Decorative separator
+Button,.btn,Yes,Yes,Yes,None,High,Background changes on hover/active affect text contrast
+Button,.btn (disabled),Yes,Yes,Yes,bg-base-content/10,High,Disabled button background + color-mix usage
+Button,.btn-active,No,Yes,Yes,None,High,Background changes affect text contrast
+Button,.btn-soft,Yes,Yes,Yes,None,High,Background changes affect text contrast
+Button,.btn-dash,Yes,Yes,Yes,None,High,Background changes affect text contrast
+Calendar,,No,No,No,opacity-0.5 (disabled dates),Low,Disabled calendar dates - decorative
+Card,,No,No,No,None,None,No accessibility concerns
+Carousel,,No,No,No,None,None,No accessibility concerns
+Chat,,No,No,No,None,None,No accessibility concerns
+Checkbox,.checkbox,Yes,No,No,None,Medium,20% opacity border may not meet contrast requirements
+Checkbox,.checkbox (disabled),Yes,No,No,opacity-20,High,Disabled checkbox - 20% opacity affects form control visibility
+Collapse,,No,No,No,None,None,No accessibility concerns
+Countdown,,No,No,No,None,None,No accessibility concerns
+Diff,.diff-item-2,Yes,No,No,None,Low,Outline for decorative element
+Divider,.divider,No,Yes,No,None,Low,Divider line background - decorative
+Dock,.dock,Yes,No,No,None,Low,Border-top - decorative
+Dock,.dock (disabled),Yes,No,No,text-base-content/10,High,Disabled dock item text - 10% opacity affects readability
+Drawer,,No,No,No,None,None,No accessibility concerns
+Dropdown,.dropdown[popover],No,Yes,No,None,Low,Backdrop overlay - decorative
+Fieldset,.fieldset legend,No,No,No,text-base-content/60,Medium,Legend text - 60% opacity may reduce readability
+File Input,.file-input,Yes,Yes,Yes,None,Medium,20% opacity borders + button background changes
+File Input,.file-input (disabled),Yes,Yes,Yes,placeholder-base-content/20,High,Disabled placeholder text - 20% opacity affects readability
+Filter,,No,No,No,None,None,No accessibility concerns
+Footer,.footer-title,No,No,No,opacity-60,Low,Footer section titles - decorative
+Hero,.hero-overlay,No,No,No,bg-neutral/50,Low,Hero background overlay - decorative
+Indicator,,No,No,No,None,None,No accessibility concerns
+Input,.input,Yes,No,Yes,None,Medium,20% opacity borders may not meet contrast requirements
+Input,.input (disabled),Yes,No,Yes,text-base-content/40 + placeholder-base-content/20,High,Disabled input text 40% + placeholder 20% opacity affect readability
+Join,,No,No,No,None,None,No accessibility concerns
+KBD,.kbd,Yes,No,No,None,Medium,Border visibility important for keyboard key identification
+Label,.label,Yes,No,No,None,Medium,Border separation in form controls
+Link,.link-primary,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-secondary,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-accent,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-neutral,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-success,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-info,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-warning,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+Link,.link-error,No,No,No,None,High,Text color changes on hover - 80%/20% mix
+List,,No,No,No,None,None,No accessibility concerns
+Loading,,No,No,No,Various opacity in SVG,Low,Loading spinner animations - decorative
+Mask,,No,No,No,None,None,No accessibility concerns
+Menu,.menu (hover),No,No,No,bg-base-content/10,Low,Menu hover background - decorative
+Menu,.menu-disabled,No,No,No,text-base-content/20,High,Disabled menu text - 20% opacity affects readability
+Menu,.menu-title,No,No,No,text-base-content/40,Medium,Menu section titles - 40% opacity may reduce readability
+Mockup Browser,,No,No,No,opacity-30 + opacity-50,Low,Mockup decorative elements
+Mockup Code,,No,No,No,opacity-30 + opacity-50,Low,Mockup decorative elements
+Mockup Phone,,No,No,No,opacity-30 + opacity-50,Low,Mockup decorative elements
+Mockup Window,,No,No,No,opacity-30 + opacity-50,Low,Mockup decorative elements
+Modal,,No,No,No,None,None,No accessibility concerns
+Navbar,,No,No,No,None,None,No accessibility concerns
+Pagination,,No,No,No,None,None,No accessibility concerns
+Progress,,No,No,No,bg-current/20,Low,Progress bar background - decorative
+Radial Progress,,No,No,No,None,None,No accessibility concerns
+Radio,.radio,Yes,No,No,None,Medium,20% opacity border may not meet contrast requirements
+Radio,.radio (disabled),Yes,No,No,opacity-20,High,Disabled radio button - 20% opacity affects form control visibility
+Range,.range,No,Yes,Yes,None,Medium,Background color for track + thumb shadows
+Range,.range (disabled),No,Yes,Yes,opacity-30,High,Disabled range input - 30% opacity affects form control visibility
+Rating,.rating (inactive),No,No,No,opacity-20,Low,Inactive rating stars - decorative
+Scroll,,No,No,No,None,None,No accessibility concerns
+Select,.select,Yes,No,Yes,None,Medium,20% opacity borders may not meet contrast requirements
+Select,.select (disabled),Yes,No,Yes,text-base-content/40 + placeholder-base-content/20,High,Disabled select text 40% + placeholder 20% opacity affect readability
+Skeleton,,No,No,No,None,None,No accessibility concerns
+Stack,.stack layers,No,No,No,opacity-70 + opacity-90,Low,Stacked element layers - decorative
+Stat,.stat,Yes,No,No,None,Low,Decorative border separators
+Stat,.stat-title,Yes,No,No,text-base-content/60,Medium,Stat titles - 60% opacity may reduce readability
+Stat,.stat-desc,Yes,No,No,text-base-content/60,Medium,Stat descriptions - 60% opacity may reduce readability
+Status,.status,No,No,Yes,bg-base-content/20 + text-black/30,Low,Status indicator - decorative
+Steps,,No,No,No,None,None,No accessibility concerns
+Swap,.swap (inactive),No,No,No,opacity-0,Low,Swap animation states - decorative
+Tab,.tabs-box,No,No,Yes,None,Low,Box-shadow on active tabs - decorative
+Tab,.tab (inactive),No,No,Yes,text-base-content/50,Medium,Inactive tab text - 50% opacity may reduce readability
+Table,.table,Yes,No,No,None,Low,Table border separators - decorative
+Table,.table headers,Yes,No,No,text-base-content/60,Medium,Table headers - 60% opacity may reduce readability
+Textarea,.textarea,Yes,No,Yes,None,Medium,20% opacity borders may not meet contrast requirements
+Textarea,.textarea (disabled),Yes,No,Yes,text-base-content/40 + placeholder-base-content/20,High,Disabled textarea text 40% + placeholder 20% opacity affect readability
+Theme Controller,,No,No,No,None,None,No accessibility concerns
+Timeline,,No,No,No,None,None,No accessibility concerns
+Toast,,No,No,No,None,None,No accessibility concerns
+Toggle,.toggle,Yes,Yes,Yes,None,Medium,20% opacity borders + background changes on state
+Toggle,.toggle (disabled),Yes,Yes,Yes,opacity-30,High,Disabled toggle - 30% opacity affects form control visibility
+Tooltip,,No,No,No,None,None,No accessibility concerns
+Tree,,No,No,No,None,None,No accessibility concerns

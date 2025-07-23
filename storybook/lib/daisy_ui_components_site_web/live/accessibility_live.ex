@@ -9,108 +9,110 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
   import DaisyUIComponents.Alert
   import DaisyUIComponents.Badge
   import DaisyUIComponents.Button
-  import DaisyUIComponents.Checkbox
-  import DaisyUIComponents.TextInput
-  import DaisyUIComponents.Select
-  import DaisyUIComponents.Radio
-  import DaisyUIComponents.Range
-  import DaisyUIComponents.Textarea
-  import DaisyUIComponents.Toggle
-  import DaisyUIComponents.Menu
   import DaisyUIComponents.Icon
-  import DaisyUIComponents.Label
 
-  # High-risk components data from CSV
+    # Helper to generate unique test indices across all variants
+  defp get_test_index(component_name, style, variant_index) do
+    base_indices = %{
+      {"Alert", "Soft"} => 0,
+      {"Alert", "Standard"} => 10,
+      {"Badge", "Standard"} => 20,
+      {"Button", "Standard"} => 30
+    }
+
+    base_index = Map.get(base_indices, {component_name, style}, 0)
+    base_index + variant_index
+  end
+
+  # Simplified high-risk components for controlled testing
   @high_risk_components [
+        %{
+      component: "Alert",
+      style: "Soft",
+      variants: [
+        %{
+          name: "Default",
+          class: "alert-soft",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Info",
+          class: "alert-soft alert-info",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Success",
+          class: "alert-soft alert-success",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Warning",
+          class: "alert-soft alert-warning",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Error",
+          class: "alert-soft alert-error",
+          test_element: "alert text content"
+        }
+      ],
+      issue: "Alert soft variants use opacity/color-mix which may cause contrast issues with text content"
+    },
     %{
       component: "Alert",
-      class: "alert-soft alert-info",
-      issue: "8% opacity background mix affects text contrast",
-      test_element: "text content on soft alert background"
+      style: "Standard",
+      variants: [
+        %{
+          name: "Default",
+          class: "alert",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Info",
+          class: "alert alert-info",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Success",
+          class: "alert alert-success",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Warning",
+          class: "alert alert-warning",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Error",
+          class: "alert alert-error",
+          test_element: "alert text content"
+        }
+      ],
+      issue: "Alert color variants may have contrast issues with text content on colored backgrounds"
     },
     %{
       component: "Badge",
-      class: "badge-soft badge-primary",
-      issue: "8% opacity background mix affects text contrast",
-      test_element: "badge text on soft background"
+      style: "Standard",
+      variants: [
+        %{
+          name: "Primary",
+          class: "badge badge-primary",
+          test_element: "badge text content"
+        }
+      ],
+      issue: "Badge color variants may have contrast issues with text"
     },
     %{
       component: "Button",
-      class: "btn btn-primary",
-      issue: "Background changes on hover/active affect text contrast",
-      test_element: "button text on hover state"
-    },
-    %{
-      component: "Button (disabled)",
-      class: "btn btn-disabled",
-      issue: "Disabled button background + color-mix usage",
-      test_element: "disabled button text"
-    },
-    %{
-      component: "Button",
-      class: "btn btn-active btn-primary",
-      issue: "Background changes affect text contrast",
-      test_element: "active button text"
-    },
-    %{
-      component: "Button",
-      class: "btn btn-soft btn-primary",
-      issue: "Background changes affect text contrast",
-      test_element: "soft button text"
-    },
-    %{
-      component: "Checkbox (disabled)",
-      class: "checkbox opacity-20",
-      issue: "20% opacity affects form control visibility",
-      test_element: "disabled checkbox visibility"
-    },
-    %{
-      component: "Input (disabled)",
-      class: "input input-bordered text-base-content/40",
-      issue: "Disabled input text 40% + placeholder 20% opacity",
-      test_element: "disabled input text and placeholder"
-    },
-    %{
-      component: "Link",
-      class: "link link-primary",
-      issue: "Text color changes on hover - 80%/20% mix",
-      test_element: "link text on hover"
-    },
-    %{
-      component: "Menu (disabled)",
-      class: "menu text-base-content/20",
-      issue: "20% opacity affects readability",
-      test_element: "disabled menu item text"
-    },
-    %{
-      component: "Radio (disabled)",
-      class: "radio opacity-20",
-      issue: "20% opacity affects form control visibility",
-      test_element: "disabled radio button visibility"
-    },
-    %{
-      component: "Range (disabled)",
-      class: "range opacity-30",
-      issue: "30% opacity affects form control visibility",
-      test_element: "disabled range slider visibility"
-    },
-    %{
-      component: "Select (disabled)",
-      class: "select select-bordered text-base-content/40",
-      issue: "Disabled select text 40% + placeholder 20% opacity",
-      test_element: "disabled select text and placeholder"
-    },
-    %{
-      component: "Textarea (disabled)",
-      class: "textarea textarea-bordered text-base-content/40",
-      issue: "Disabled textarea text 40% + placeholder 20% opacity",
-      test_element: "disabled textarea text and placeholder"
-    },
-    %{
-      component: "Toggle (disabled)",
-      class: "toggle opacity-30",
-      issue: "30% opacity affects form control visibility",
-      test_element: "disabled toggle visibility"
+      style: "Standard",
+      variants: [
+        %{
+          name: "Primary",
+          class: "btn btn-primary",
+          test_element: "button text on hover state"
+        }
+      ],
+      issue: "Background changes on hover/active affect text contrast"
     }
   ]
 
@@ -120,8 +122,8 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
         <div>
-          <h1 class="text-4xl font-bold text-base-content">Accessibility Testing</h1>
-          <p class="text-base-content/70 mt-2">WCAG AA Contrast Ratio Analysis for High-Risk Components</p>
+          <h1 class="text-4xl font-light text-base-content">Accessibility Testing</h1>
+          <p class="text-base-content/70 text-sm mt-2">WCAG AA Contrast Ratio Analysis for High-Risk Components</p>
         </div>
         <div class="flex items-center gap-4">
           <.link navigate="/colors" class="btn btn-outline btn-sm">
@@ -138,8 +140,8 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div class="stat bg-base-200 rounded-lg">
           <div class="stat-title text-sm">Total Tests</div>
-          <div class="stat-value text-2xl" id="total-tests">{length(@high_risk_components)}</div>
-          <div class="stat-desc">High-risk components</div>
+          <div class="stat-value text-2xl" id="total-tests">{Enum.sum(Enum.map(@high_risk_components, fn comp -> length(comp.variants) end))}</div>
+          <div class="stat-desc">High-risk variants</div>
         </div>
         <div class="stat bg-success/10 rounded-lg">
           <div class="stat-title text-sm">Passing</div>
@@ -159,12 +161,12 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
       </div>
 
       <!-- Scan Controls -->
-      <div class="card bg-base-200 shadow-xl mb-8">
+      <div class="card bg-base-100 border border-base-300 shadow mb-8">
         <div class="card-body">
           <div class="flex justify-between items-center">
             <div>
-              <h2 class="card-title">Contrast Testing</h2>
-              <p class="text-base-content/70">WCAG AA: 4.5:1 normal text, 3:1 large text (18pt+ or 14pt+ bold)</p>
+              <h2 class="card-title text-sm uppercase">Contrast Testing</h2>
+              <p class="text-base-content/70 text-xs italic">WCAG AA: 4.5:1 normal text, 3:1 large text (18pt+ or 14pt+ bold)</p>
             </div>
             <button class="btn btn-primary" onclick="window.scanAllComponents()" id="scan-button">
               <.icon name="hero-magnifying-glass" class="h-4 w-4" />
@@ -174,47 +176,47 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         </div>
       </div>
 
-      <!-- Component Tests -->
+                  <!-- Component Tests -->
       <div class="space-y-8">
-        <div :for={{component, index} <- Enum.with_index(@high_risk_components)} class="card bg-base-200 shadow-xl">
+        <div :for={component <- @high_risk_components} class="card bg-base-200 shadow">
           <div class="card-body">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-semibold">{component.component}</h3>
-                <p class="text-sm text-base-content/70 mt-1">{component.issue}</p>
-                <code class="text-xs bg-base-300 px-2 py-1 rounded mt-2 inline-block">{component.class}</code>
-              </div>
-              <div class="flex items-center gap-2">
-                <div
-                  class="contrast-result hidden"
-                  id={"result-#{index}"}
-                  data-component-index={index}
-                >
-                  <div class="flex items-center gap-2">
-                    <div class="contrast-status w-3 h-3 rounded-full"></div>
-                    <span class="contrast-ratio text-sm font-mono"></span>
-                    <span class="wcag-status text-xs font-medium px-2 py-1 rounded"></span>
+            <!-- Component Header -->
+            <div class="mb-6">
+              <h3 class="text-xl font-semibold">{component.component} - {component.style}</h3>
+              <p class="text-sm text-base-content/70 mt-1">{component.issue}</p>
+            </div>
+
+                        <!-- Variant Test Sections -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div :for={{variant, variant_index} <- Enum.with_index(component.variants)}
+                   class="border border-base-300 rounded-lg p-4 bg-base-100">
+                <!-- Class and Results Header -->
+                <div class="flex justify-between items-center mb-4">
+                  <code class="text-xs bg-base-300 px-3 py-2 rounded font-mono">{variant.class}</code>
+                  <div
+                    class="contrast-result hidden"
+                    id={"result-#{get_test_index(component.component, component.style, variant_index)}"}
+                    data-component-index={get_test_index(component.component, component.style, variant_index)}
+                  >
+                    <div class="flex items-center gap-2">
+                      <div class="contrast-status w-3 h-3 rounded-full"></div>
+                      <span class="contrast-ratio text-sm font-mono"></span>
+                      <span class="wcag-status text-xs font-medium px-2 py-1 rounded"></span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Component Instance -->
-            <div class="border border-base-300 rounded-lg p-6 bg-base-100">
-              <div
-                class="component-test"
-                id={"test-#{index}"}
-                data-component={component.component}
-                data-test-element={component.test_element}
-              >
-                {component_instance(component, index)}
+                <!-- Component Instance -->
+                <div
+                  class="component-test"
+                  id={"test-#{get_test_index(component.component, component.style, variant_index)}"}
+                  data-component={"#{component.component}-#{component.style}"}
+                  data-test-element={variant.test_element}
+                  data-debug-index={get_test_index(component.component, component.style, variant_index)}
+                >
+                  {component_instance(component.component, variant)}
+                </div>
               </div>
-            </div>
-
-            <!-- Remediation Suggestions -->
-            <div class="remediation-suggestions hidden mt-4 p-4 bg-warning/10 rounded-lg" id={"remediation-#{index}"}>
-              <h4 class="font-medium text-warning mb-2">⚠️ Remediation Suggestions</h4>
-              <div class="remediation-content text-sm space-y-2"></div>
             </div>
           </div>
         </div>
@@ -233,6 +235,24 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
               <.icon name="hero-clipboard-document-list" class="h-4 w-4" />
               Export Detailed Report
             </button>
+            <button class="btn btn-outline btn-sm" onclick="console.log('Debug info:', document.querySelectorAll('.component-test'))">
+              Debug Test Elements
+            </button>
+          </div>
+
+          <!-- Debug Info -->
+          <div class="mt-4 text-xs text-base-content/60">
+            <details>
+              <summary>Debug: Test Indices</summary>
+              <div class="grid grid-cols-4 gap-2 mt-2 font-mono">
+                <div :for={component <- @high_risk_components}>
+                  <div class="font-semibold">{component.component} - {component.style}</div>
+                  <div :for={{variant, idx} <- Enum.with_index(component.variants)} class="text-xs">
+                    {variant.name}: #{get_test_index(component.component, component.style, idx)}
+                  </div>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </div>
@@ -240,175 +260,44 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     """
   end
 
-  # Helper function to render different component instances
-  defp component_instance(%{component: "Alert"} = component, index) do
-    assigns = %{component: component, index: index}
+      # Helper function to render different component instances
+  defp component_instance("Alert", variant) do
+    assigns = %{variant: variant}
     ~H"""
-    <.alert class={@component.class}>
+    <.alert class={@variant.class}>
       <.icon name="hero-information-circle" class="h-5 w-5" />
-      <span>This is a soft alert with background opacity that may affect text contrast</span>
+      <span>This is an alert with background that may affect text contrast</span>
     </.alert>
     """
   end
 
-  defp component_instance(%{component: "Badge"} = component, index) do
-    assigns = %{component: component, index: index}
+  defp component_instance("Badge", variant) do
+    assigns = %{variant: variant, name: variant.name}
     ~H"""
-    <.badge class={@component.class}>Primary Badge</.badge>
+    <.badge class={@variant.class}>{@name} Badge</.badge>
     """
   end
 
-  defp component_instance(%{component: "Button" <> _} = component, index) do
-    assigns = %{component: component, index: index}
+  defp component_instance("Button", variant) do
+    assigns = %{variant: variant}
     ~H"""
-    <.button class={@component.class} disabled={String.contains?(@component.component, "disabled")}>
-      {if String.contains?(@component.component, "disabled"), do: "Disabled Button", else: "Button Text"}
+    <.button class={@variant.class}>
+      Button Text
     </.button>
     """
   end
 
-  defp component_instance(%{component: "Checkbox" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <label class="flex items-center gap-2">
-      <.checkbox class={@component.class} disabled={String.contains?(@component.component, "disabled")} />
-      <span class={["label-text", if(String.contains?(@component.component, "disabled"), do: "text-base-content/40", else: "")]}>
-        {if String.contains?(@component.component, "disabled"), do: "Disabled Checkbox", else: "Checkbox Label"}
-      </span>
-    </label>
-    """
-  end
-
-  defp component_instance(%{component: "Input" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div>
-      <.label class="label-text font-medium text-sm text-base-content block">Input Field</.label>
-      <.text_input
-        class={@component.class}
-        placeholder="Placeholder text with reduced opacity"
-        value={if String.contains?(@component.component, "disabled"), do: "Disabled input text"}
-        disabled={String.contains?(@component.component, "disabled")}
-      />
-    </div>
-    """
-  end
-
-  defp component_instance(%{component: "Link"} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div class="space-y-2">
-      <a href="#" class={@component.class}>Primary Link (hover to test)</a>
-      <a href="#" class="link link-secondary">Secondary Link</a>
-      <a href="#" class="link link-accent">Accent Link</a>
-    </div>
-    """
-  end
-
-  defp component_instance(%{component: "Menu" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <.menu class="bg-base-200 w-56">
-      <:item><a>Regular Menu Item</a></:item>
-      <:item><a class={@component.class}>Disabled Menu Item</a></:item>
-      <:item><a>Another Regular Item</a></:item>
-    </.menu>
-    """
-  end
-
-  defp component_instance(%{component: "Radio" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div class="space-y-2">
-      <label class="flex items-center gap-2">
-        <.radio name={"radio-#{@index}"} class="radio radio-primary" />
-        <span class="label-text">Regular Radio</span>
-      </label>
-      <label class="flex items-center gap-2">
-        <.radio name={"radio-#{@index}"} class={@component.class} disabled={String.contains?(@component.component, "disabled")} />
-        <span class={["label-text", if(String.contains?(@component.component, "disabled"), do: "text-base-content/40", else: "")]}>
-          {if String.contains?(@component.component, "disabled"), do: "Disabled Radio", else: "Radio Label"}
-        </span>
-      </label>
-    </div>
-    """
-  end
-
-  defp component_instance(%{component: "Range" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div class="space-y-4">
-      <div>
-        <.label class="label-text font-medium text-sm text-base-content block">Regular Range</.label>
-        <.range class="range range-primary" />
-      </div>
-      <div>
-        <.label class="label-text font-medium text-sm text-base-content/40 block">Disabled Range</.label>
-        <.range class={@component.class} disabled={String.contains?(@component.component, "disabled")} />
-      </div>
-    </div>
-    """
-  end
-
-  defp component_instance(%{component: "Select" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div>
-      <.label class="label-text font-medium text-sm text-base-content block">Select Field</.label>
-      <.select class={@component.class} disabled={String.contains?(@component.component, "disabled")}>
-        <option disabled selected>
-          {if String.contains?(@component.component, "disabled"), do: "Disabled placeholder", else: "Choose option"}
-        </option>
-        <option>Option 1</option>
-        <option>Option 2</option>
-      </.select>
-    </div>
-    """
-  end
-
-  defp component_instance(%{component: "Textarea" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div>
-      <.label class="label-text font-medium text-sm text-base-content block">Textarea Field</.label>
-      <.textarea
-        class={@component.class}
-        placeholder="Placeholder text with reduced opacity"
-        disabled={String.contains?(@component.component, "disabled")}
-      >
-        {if String.contains?(@component.component, "disabled"), do: "Disabled textarea content"}
-      </.textarea>
-    </div>
-    """
-  end
-
-  defp component_instance(%{component: "Toggle" <> _} = component, index) do
-    assigns = %{component: component, index: index}
-    ~H"""
-    <div class="space-y-2">
-      <label class="flex items-center gap-2">
-        <.toggle class="toggle toggle-primary" />
-        <span class="label-text">Regular Toggle</span>
-      </label>
-      <label class="flex items-center gap-2">
-        <.toggle class={@component.class} disabled={String.contains?(@component.component, "disabled")} />
-        <span class={["label-text", if(String.contains?(@component.component, "disabled"), do: "text-base-content/40", else: "")]}>
-          {if String.contains?(@component.component, "disabled"), do: "Disabled Toggle", else: "Toggle Label"}
-        </span>
-      </label>
-    </div>
-    """
-  end
-
-  defp component_instance(component, index) do
-    assigns = %{component: component, index: index}
+  defp component_instance(component_name, variant) do
+    assigns = %{component_name: component_name, variant: variant}
     ~H"""
     <div class="p-4 bg-warning/10 rounded">
-      <p class="text-warning">Component type "{@component.component}" not yet implemented</p>
-      <code class="text-xs">{@component.class}</code>
+      <p class="text-warning">Component type "{@component_name}" not yet implemented</p>
+      <code class="text-xs">{@variant.class}</code>
     </div>
     """
   end
+
+
 
   def mount(_params, _session, socket) do
     {:ok,
