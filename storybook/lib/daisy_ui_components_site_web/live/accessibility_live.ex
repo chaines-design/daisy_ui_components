@@ -14,8 +14,8 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     # Helper to generate unique test indices across all variants
   defp get_test_index(component_name, style, variant_index) do
     base_indices = %{
-      {"Alert", "Soft"} => 0,
-      {"Alert", "Standard"} => 10,
+      {"Alert", "Standard"} => 0,
+      {"Alert", "Soft"} => 10,
       {"Alert", "Outline"} => 20,
       {"Badge", "Standard"} => 30,
       {"Button", "High-Risk States"} => 40
@@ -27,38 +27,6 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
 
   # Simplified high-risk components for controlled testing
   @high_risk_components [
-        %{
-      component: "Alert",
-      style: "Soft",
-      variants: [
-        %{
-          name: "Default",
-          class: "alert-soft",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Info",
-          class: "alert-soft alert-info",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Success",
-          class: "alert-soft alert-success",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Warning",
-          class: "alert-soft alert-warning",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Error",
-          class: "alert-soft alert-error",
-          test_element: "alert text content"
-        }
-      ],
-      issue: "Alert soft variants use opacity/color-mix which may cause contrast issues with text content"
-    },
     %{
       component: "Alert",
       style: "Standard",
@@ -90,6 +58,38 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         }
       ],
       issue: "Alert color variants may have contrast issues with text content on colored backgrounds"
+    },
+    %{
+      component: "Alert",
+      style: "Soft",
+      variants: [
+        %{
+          name: "Default",
+          class: "alert-soft",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Info",
+          class: "alert-soft alert-info",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Success",
+          class: "alert-soft alert-success",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Warning",
+          class: "alert-soft alert-warning",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Error",
+          class: "alert-soft alert-error",
+          test_element: "alert text content"
+        }
+      ],
+      issue: "Alert soft variants use opacity/color-mix which may cause contrast issues with text content"
     },
     %{
       component: "Alert",
@@ -137,8 +137,23 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     },
     %{
       component: "Button",
-      style: "High-Risk States",
+      style: "Variants",
       variants: [
+        %{
+          name: "Default",
+          class: "btn",
+          test_element: "button text content"
+        },
+        %{
+          name: "Default Soft",
+          class: "btn btn-soft",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Default Outline",
+          class: "btn btn-outline",
+          test_element: "button text content"
+        },
         %{
           name: "Primary",
           class: "btn btn-primary",
@@ -152,6 +167,111 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         %{
           name: "Outline",
           class: "btn btn-outline btn-primary",
+          test_element: "button text content"
+        },
+        %{
+          name: "Error",
+          class: "btn btn-error",
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Error",
+          class: "btn btn-soft btn-error",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline Error",
+          class: "btn btn-outline btn-error",
+          test_element: "button text content"
+        },
+        %{
+          name: "Success",
+          class: "btn btn-success",
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Success",
+          class: "btn btn-soft btn-success",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline Success",
+          class: "btn btn-outline btn-success",
+          test_element: "button text content"
+        },
+        %{
+          name: "Warning",
+          class: "btn btn-warning",
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Warning",
+          class: "btn btn-soft btn-warning",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline Warning",
+          class: "btn btn-outline btn-warning",
+          test_element: "button text content"
+        },
+        %{
+          name: "Info",
+          class: "btn btn-info",
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Info",
+          class: "btn btn-soft btn-info",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline Info",
+          class: "btn btn-outline btn-info",
+          test_element: "button text content"
+        },
+        %{
+          name: "Secondary",
+          class: "btn btn-secondary",
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Secondary",
+          class: "btn btn-soft btn-secondary",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline Secondary",
+          class: "btn btn-outline btn-secondary",
+          test_element: "button text content"
+        },
+        %{
+          name: "Accent",
+          class: "btn btn-accent",
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Accent",
+          class: "btn btn-soft btn-accent",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline Accent",
+          class: "btn btn-outline btn-accent",
+          test_element: "button text content"
+        },
+        %{
+          name: "Neutral",
+          class: "btn btn-neutral",
+          test_element: "button text content"
+        },
+        %{
+          name: "Ghost",
+          class: "btn btn-ghost",
+          test_element: "button text content"
+        },
+        %{
+          name: "Link",
+          class: "btn btn-link",
           test_element: "button text content"
         }
       ],
@@ -319,7 +439,7 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     assigns = %{variant: variant, is_disabled: variant.name == "Disabled"}
     ~H"""
     <.button class={@variant.class} disabled={@is_disabled}>
-      Button Text
+      Button
     </.button>
     """
   end
