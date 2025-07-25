@@ -116,7 +116,7 @@ export const AccessibilityChecker = {
         // Small delay to ensure styles are fully applied
     setTimeout(() => {
       // Calculate contrast ratio
-      const result = this.calculateContrastRatio(elementToTest);
+      const result = this.calculateContrastRatio(elementToTest, component);
       
       // Store result for export
       this.testResults.push({
@@ -147,7 +147,54 @@ export const AccessibilityChecker = {
     // Different strategies for finding the right element to test
     let element = null;
     
-    if (component.includes('Button')) {
+    if (component.includes('Disabled')) {
+      console.log('🔒 Processing disabled component:', component);
+      console.log('🔒 Container HTML preview:', container.innerHTML.substring(0, 200) + '...');
+      
+      // First, try to find ANY disabled element regardless of component name
+      console.log('🔒 Looking for any disabled element...');
+      element = container.querySelector('button[disabled]') || 
+                container.querySelector('input[disabled]') || 
+                container.querySelector('select[disabled]');
+      
+      console.log('🔒 Found any disabled element:', element, 'disabled attr:', element?.disabled);
+      
+      // If no disabled attribute found, look for specific disabled classes or patterns
+      if (!element) {
+        console.log('🔒 No [disabled] attribute found, checking by content...');
+        
+        // Check if container contains button
+        if (container.querySelector('button') || container.querySelector('.btn')) {
+          console.log('🔒 Found button in container');
+          element = container.querySelector('button') || container.querySelector('.btn');
+        }
+        // Check if container contains input
+        else if (container.querySelector('input')) {
+          console.log('🔒 Found input in container');
+          element = container.querySelector('input');
+        }
+        // Check if container contains select
+        else if (container.querySelector('select')) {
+          console.log('🔒 Found select in container');
+          element = container.querySelector('select');
+        }
+        
+        console.log('🔒 Fallback element found:', element);
+      }
+      
+      if (element) {
+        console.log('🔒 Selected disabled element:', element.tagName, element.className);
+        console.log('🔒 Element styles:', {
+          opacity: window.getComputedStyle(element).opacity,
+          color: window.getComputedStyle(element).color,
+          backgroundColor: window.getComputedStyle(element).backgroundColor
+        });
+        console.log('🔒 RETURNING EARLY - should not see fallback logic');
+        return element; // Return early to avoid fallback logic
+      } else {
+        console.log('🔒 No disabled element found, using fallback');
+      }
+    } else if (component.includes('Button')) {
       element = container.querySelector('button') || container.querySelector('.btn');
       console.log('Button element found:', element);
       console.log('Button element classes:', element ? element.className : 'none');
@@ -197,22 +244,81 @@ export const AccessibilityChecker = {
     console.log('Selected element classes:', element ? element.className : 'none');
     console.log('Selected element computed style sample:', element ? {
       backgroundColor: window.getComputedStyle(element).backgroundColor,
-      color: window.getComputedStyle(element).color
+      color: window.getComputedStyle(element).color,
+      opacity: window.getComputedStyle(element).opacity,
+      disabled: element.disabled
     } : 'none');
     
     return element;
   },
 
-  calculateContrastRatio(element) {
+  calculateContrastRatio(element, component = '') {
     try {
+      console.log('=== CONTRAST CALCULATION START ===');
       console.log('Testing element:', element);
       console.log('Element classes:', element.className);
+      console.log('Component name:', component);
       
       const computedStyle = window.getComputedStyle(element);
-      const backgroundColor = this.getBackgroundColor(element);
-      const textColor = computedStyle.color;
+      // More comprehensive disabled detection
+      let isDisabled = false;
+      let disabledSource = '';
+      
+      // Check the element itself
+      if (element.disabled || element.hasAttribute('disabled')) {
+        isDisabled = true;
+        disabledSource = 'element disabled attribute';
+      }
+      
+      // Check for disabled classes
+      if (element.classList.contains('btn-disabled') || 
+          element.classList.contains('input-disabled') ||
+          element.classList.contains('select-disabled')) {
+        isDisabled = true;
+        disabledSource = 'element disabled class';
+      }
+      
+      // Check if testing label for disabled input
+      const parentLabel = element.closest('label');
+      if (parentLabel) {
+        const disabledInput = parentLabel.querySelector('input[disabled]') || parentLabel.querySelector('select[disabled]');
+        if (disabledInput) {
+          isDisabled = true;
+          disabledSource = 'parent label contains disabled input';
+        }
+      }
+      
+             
+       // Check if component name indicates disabled
+       if (component && component.includes('Disabled')) {
+         isDisabled = true;
+         if (!disabledSource) disabledSource = 'component name indicates disabled';
+       }
+       
+       // Check if we're in a disabled container
+      if (element.closest('.btn-disabled') || element.closest('[disabled]')) {
+        isDisabled = true;
+        if (!disabledSource) disabledSource = 'parent element is disabled';
+      }
+      
+      let backgroundColor = this.getBackgroundColor(element);
+      let textColor = computedStyle.color;
       
       console.log('Colors found - Background:', backgroundColor, 'Text:', textColor);
+      console.log('Element opacity:', computedStyle.opacity);
+      console.log('Is disabled:', isDisabled, '- Source:', disabledSource);
+      
+      if (isDisabled) {
+        console.log('🔒 DISABLED COMPONENT DETECTED!');
+        console.log('🔒 Element:', element.tagName, element.className);
+        console.log('🔒 Component:', component);
+        console.log('🔒 Disabled source:', disabledSource);
+      } else {
+        console.log('❌ NOT detected as disabled');
+        console.log('   Element disabled:', element.disabled);
+        console.log('   Element classes:', element.className);
+        console.log('   Component includes Disabled:', component ? component.includes('Disabled') : 'no component');
+      }
       
       // Check for color-mix indicators in the classes
       const hasColorMix = this.detectColorMixUsage(element);
@@ -222,15 +328,24 @@ export const AccessibilityChecker = {
         console.log('Raw text color:', computedStyle.color);
       }
       
-      // Special debugging for disabled buttons
-      if (element.classList.contains('btn-disabled') || element.closest('.btn-disabled')) {
-        console.log('=== DISABLED BUTTON DEBUG ===');
+      // Special debugging for disabled elements
+      if (isDisabled) {
+        console.log('=== DISABLED ELEMENT DEBUG ===');
         console.log('Element:', element);
+        console.log('Element type:', element.tagName);
         console.log('Computed style backgroundColor:', computedStyle.backgroundColor);
         console.log('Computed style color:', computedStyle.color);
         console.log('Computed style opacity:', computedStyle.opacity);
+        console.log('Element disabled attr:', element.disabled);
         console.log('Parent elements:', element.parentElement);
-        console.log('==============================');
+        
+        // Check if we're testing a label for a disabled input
+        const disabledInput = element.closest('label')?.querySelector('input[disabled]');
+        if (disabledInput) {
+          console.log('Found disabled input in label:', disabledInput);
+          console.log('Disabled input opacity:', window.getComputedStyle(disabledInput).opacity);
+        }
+        console.log('================================');
       }
       
       let bgRgb = this.parseColor(backgroundColor);
@@ -270,6 +385,55 @@ export const AccessibilityChecker = {
         console.log('✅ Blended text color:', textRgb);
       }
       
+      // Handle disabled element opacity
+      if (isDisabled) {
+        // Check opacity at multiple levels - DaisyUI might apply it to parent elements
+        let effectiveOpacity = parseFloat(computedStyle.opacity);
+        let opacitySource = 'element itself';
+        
+        // Check parent elements for opacity
+        let current = element.parentElement;
+        let level = 1;
+        while (current && level <= 3) { // Check up to 3 levels up
+          const parentStyle = window.getComputedStyle(current);
+          const parentOpacity = parseFloat(parentStyle.opacity);
+          if (parentOpacity < 1.0) {
+            effectiveOpacity *= parentOpacity;
+            opacitySource += ` + parent level ${level} (${parentOpacity})`;
+          }
+          current = current.parentElement;
+          level++;
+        }
+        
+        console.log('🔒 Processing disabled element');
+        console.log('   Element opacity:', computedStyle.opacity);
+        console.log('   Effective opacity:', effectiveOpacity);
+        console.log('   Opacity source:', opacitySource);
+        
+        if (effectiveOpacity < 0.99) { // Use slightly more lenient threshold
+          const pageBackground = this.getPageBackgroundColor();
+          
+          // Apply opacity to both text and background colors by blending with page background
+          console.log('🔄 Applying opacity to disabled element colors');
+          console.log('   Original text color:', textRgb);
+          console.log('   Original background color:', bgRgb);
+          
+          // Create color with reduced opacity
+          const textWithOpacity = { ...textRgb, a: textRgb.a * effectiveOpacity };
+          const bgWithOpacity = { ...bgRgb, a: bgRgb.a * effectiveOpacity };
+          
+          // Blend with page background to get final rendered colors
+          textRgb = this.blendColors(textWithOpacity, pageBackground);
+          bgRgb = this.blendColors(bgWithOpacity, pageBackground);
+          
+          console.log('✅ Final text color after opacity:', textRgb);
+          console.log('✅ Final background color after opacity:', bgRgb);
+                 } else {
+           console.log('⚠️ No significant opacity found for disabled element');
+           console.log('   Effective opacity was:', effectiveOpacity, '(threshold: 0.99)');
+         }
+      }
+      
       // Additional logging for color-mix scenarios
       if (hasColorMix) {
         console.log('🎨 Final colors after color-mix processing:');
@@ -303,6 +467,7 @@ export const AccessibilityChecker = {
       }
       
       console.log('Final result:', { ratio, status, threshold, isLargeText });
+      console.log('=== CONTRAST CALCULATION END ===');
       
       return {
         ratio: ratio,

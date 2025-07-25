@@ -16,7 +16,8 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     base_indices = %{
       {"Alert", "Variants"} => 0,
       {"Badge", "Standard"} => 20,
-      {"Button", "Variants"} => 50
+      {"Button", "Variants"} => 50,
+      {"Disabled", "Variants"} => 80
     }
 
     base_index = Map.get(base_indices, {component_name, style}, 0)
@@ -390,6 +391,58 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         }
       ],
       issue: "Button states (hover, active, disabled) often have insufficient contrast due to color/opacity changes"
+    },
+    %{
+      component: "Disabled",
+      style: "Variants",
+      variants: [
+        %{
+          name: "Disabled Button",
+          class: "btn btn-disabled",
+          test_element: "button text content"
+        },
+        %{
+          name: "Disabled Input",
+          class: "input input-disabled",
+          test_element: "input placeholder or value"
+        },
+        %{
+          name: "Disabled Select",
+          class: "select select-disabled",
+          test_element: "select placeholder or options"
+        },
+        %{
+          name: "Disabled Checkbox",
+          class: "checkbox checkbox-disabled",
+          test_element: "checkbox label text"
+        },
+        %{
+          name: "Disabled Radio",
+          class: "radio radio-disabled",
+          test_element: "radio label text"
+        },
+        %{
+          name: "Disabled Toggle",
+          class: "toggle toggle-disabled",
+          test_element: "toggle label text"
+        },
+        %{
+          name: "Disabled Checkbox (Checked)",
+          class: "checkbox checkbox-disabled checkbox-checked",
+          test_element: "checkbox label text"
+        },
+        %{
+          name: "Disabled Radio (Checked)",
+          class: "radio radio-disabled radio-checked",
+          test_element: "radio label text"
+        },
+        %{
+          name: "Disabled Toggle (Checked)",
+          class: "toggle toggle-disabled toggle-checked",
+          test_element: "toggle label text"
+        }
+      ],
+      issue: "Disabled components often fail contrast requirements due to reduced opacity or faded colors"
     }
   ]
 
@@ -558,6 +611,60 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     <.button class={@variant.class} disabled={@is_disabled}>
       Button
     </.button>
+    """
+  end
+
+  defp component_instance("Disabled", variant) do
+    assigns = %{variant: variant}
+    ~H"""
+    <div :if={String.contains?(@variant.class, "btn")}>
+      <.button class={@variant.class} disabled={true}>
+        Disabled Button
+      </.button>
+    </div>
+    <div :if={String.contains?(@variant.class, "input")}>
+      <.input class={@variant.class} disabled={true} placeholder="Disabled input field" />
+    </div>
+    <div :if={String.contains?(@variant.class, "select")}>
+      <select class={@variant.class} disabled={true}>
+        <option>Choose option...</option>
+        <option>Option 1</option>
+        <option>Option 2</option>
+      </select>
+    </div>
+    <div :if={String.contains?(@variant.class, "checkbox")}>
+      <label class="label cursor-pointer justify-start gap-3">
+        <input
+          type="checkbox"
+          class={String.replace(@variant.class, "checkbox-checked", "")}
+          disabled={true}
+          checked={String.contains?(@variant.class, "checked")}
+        />
+        <span class="label-text">{if String.contains?(@variant.class, "checked"), do: "Disabled checkbox (checked)", else: "Disabled checkbox"}</span>
+      </label>
+    </div>
+    <div :if={String.contains?(@variant.class, "radio")}>
+      <label class="label cursor-pointer justify-start gap-3">
+        <input
+          type="radio"
+          class={String.replace(@variant.class, "radio-checked", "")}
+          disabled={true}
+          checked={String.contains?(@variant.class, "checked")}
+        />
+        <span class="label-text">{if String.contains?(@variant.class, "checked"), do: "Disabled radio (checked)", else: "Disabled radio"}</span>
+      </label>
+    </div>
+    <div :if={String.contains?(@variant.class, "toggle")}>
+      <label class="label cursor-pointer justify-start gap-3">
+        <input
+          type="checkbox"
+          class={String.replace(@variant.class, "toggle-checked", "")}
+          disabled={true}
+          checked={String.contains?(@variant.class, "checked")}
+        />
+        <span class="label-text">{if String.contains?(@variant.class, "checked"), do: "Disabled toggle (checked)", else: "Disabled toggle"}</span>
+      </label>
+    </div>
     """
   end
 
