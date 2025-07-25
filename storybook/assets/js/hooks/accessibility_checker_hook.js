@@ -142,6 +142,9 @@ export const AccessibilityChecker = {
     
     if (component.includes('Button')) {
       element = container.querySelector('button') || container.querySelector('.btn');
+      console.log('Button element found:', element);
+      console.log('Button element classes:', element ? element.className : 'none');
+      console.log('Button element disabled state:', element ? element.disabled : 'none');
     } else if (component.includes('Alert')) {
       // For alerts, we want to test the text content, not the background
       element = container.querySelector('.alert span') || container.querySelector('.alert') || container.querySelector('[role="alert"]');
@@ -196,6 +199,7 @@ export const AccessibilityChecker = {
   calculateContrastRatio(element) {
     try {
       console.log('Testing element:', element);
+      console.log('Element classes:', element.className);
       
       const computedStyle = window.getComputedStyle(element);
       const backgroundColor = this.getBackgroundColor(element);
@@ -203,8 +207,27 @@ export const AccessibilityChecker = {
       
       console.log('Colors found - Background:', backgroundColor, 'Text:', textColor);
       
-      const bgRgb = this.parseColor(backgroundColor);
-      const textRgb = this.parseColor(textColor);
+      // Check for color-mix indicators in the classes
+      const hasColorMix = this.detectColorMixUsage(element);
+      if (hasColorMix) {
+        console.log('🎨 COLOR-MIX DETECTED:', hasColorMix);
+        console.log('Raw background color:', computedStyle.backgroundColor);
+        console.log('Raw text color:', computedStyle.color);
+      }
+      
+      // Special debugging for disabled buttons
+      if (element.classList.contains('btn-disabled') || element.closest('.btn-disabled')) {
+        console.log('=== DISABLED BUTTON DEBUG ===');
+        console.log('Element:', element);
+        console.log('Computed style backgroundColor:', computedStyle.backgroundColor);
+        console.log('Computed style color:', computedStyle.color);
+        console.log('Computed style opacity:', computedStyle.opacity);
+        console.log('Parent elements:', element.parentElement);
+        console.log('==============================');
+      }
+      
+      let bgRgb = this.parseColor(backgroundColor);
+      let textRgb = this.parseColor(textColor);
       
       if (!bgRgb) {
         console.error('Failed to parse background color:', backgroundColor);
@@ -222,6 +245,29 @@ export const AccessibilityChecker = {
           status: 'error',
           message: `Could not parse text color: ${textColor}`
         };
+      }
+      
+      // Handle alpha blending for semi-transparent colors (common with color-mix)
+      if (bgRgb.a < 0.95) { // Slightly more lenient threshold to catch near-transparent colors
+        const pageBackground = this.getPageBackgroundColor();
+        console.log('🔄 Alpha-blending background:', bgRgb, 'over', pageBackground);
+        bgRgb = this.blendColors(bgRgb, pageBackground);
+        console.log('✅ Blended background color:', bgRgb);
+      }
+      
+      if (textRgb.a < 0.95) { // Slightly more lenient threshold
+        // For text, blend over the effective background (which might already be blended)
+        const effectiveBackground = bgRgb.a < 0.95 ? this.getPageBackgroundColor() : bgRgb;
+        console.log('🔄 Alpha-blending text:', textRgb, 'over effective background:', effectiveBackground);
+        textRgb = this.blendColors(textRgb, effectiveBackground);
+        console.log('✅ Blended text color:', textRgb);
+      }
+      
+      // Additional logging for color-mix scenarios
+      if (hasColorMix) {
+        console.log('🎨 Final colors after color-mix processing:');
+        console.log('   Background RGB:', bgRgb);
+        console.log('   Text RGB:', textRgb);
       }
       
       const bgLuminance = this.getLuminance(bgRgb);
@@ -337,6 +383,11 @@ export const AccessibilityChecker = {
     }
     
     console.log('Parsing color:', colorString);
+    
+    // Debug for very low alpha values that might cause 1:1 ratios
+    if (colorString.includes('rgba') && colorString.includes('0.')) {
+      console.log('*** LOW ALPHA COLOR DETECTED ***', colorString);
+    }
     
     // Handle rgb() and rgba() colors
     const rgbMatch = colorString.match(/rgba?\(([^)]+)\)/);
@@ -682,6 +733,74 @@ export const AccessibilityChecker = {
     ]);
     
     return [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+  },
+
+  detectColorMixUsage(element) {
+    const classes = element.className;
+    const colorMixIndicators = [];
+    
+    // DaisyUI patterns that commonly use color-mix
+    if (classes.includes('alert-soft')) colorMixIndicators.push('alert-soft (uses color-mix for transparency)');
+    if (classes.includes('btn-disabled')) colorMixIndicators.push('btn-disabled (uses color-mix for opacity)');
+    if (classes.includes('btn-ghost')) colorMixIndicators.push('btn-ghost (uses color-mix for hover states)');
+    if (classes.includes('btn-outline')) colorMixIndicators.push('btn-outline (uses color-mix for fill transitions)');
+    if (classes.includes('badge-soft')) colorMixIndicators.push('badge-soft (uses color-mix for transparency)');
+    if (classes.includes('opacity-')) colorMixIndicators.push('opacity utility (may interact with color-mix)');
+    
+    // Check for hover-state classes that might use color-mix
+    if (classes.includes('hover:bg-') || classes.includes('hover:text-')) {
+      colorMixIndicators.push('forced hover state (may use color-mix)');
+    }
+    
+    // Look for transparency in computed colors as additional indicator
+    const computedStyle = window.getComputedStyle(element);
+    const bgColor = computedStyle.backgroundColor;
+    const textColor = computedStyle.color;
+    
+    if ((bgColor && bgColor.includes('rgba') && bgColor.includes('0.')) || 
+        (bgColor && bgColor.includes('oklab') && bgColor.includes('/'))) {
+      colorMixIndicators.push('semi-transparent background (likely color-mix result)');
+    }
+    
+    if ((textColor && textColor.includes('rgba') && textColor.includes('0.')) ||
+        (textColor && textColor.includes('oklch') && textColor.includes('/'))) {
+      colorMixIndicators.push('semi-transparent text (likely color-mix result)');
+    }
+    
+    return colorMixIndicators.length > 0 ? colorMixIndicators : null;
+  },
+
+  getPageBackgroundColor() {
+    // Get the effective page background color
+    const bodyStyle = window.getComputedStyle(document.body);
+    const bodyBg = bodyStyle.backgroundColor;
+    
+    if (bodyBg && bodyBg !== 'rgba(0, 0, 0, 0)' && bodyBg !== 'transparent') {
+      return this.parseColor(bodyBg) || { r: 1, g: 1, b: 1, a: 1 }; // fallback to white
+    }
+    
+    const htmlStyle = window.getComputedStyle(document.documentElement);
+    const htmlBg = htmlStyle.backgroundColor;
+    
+    if (htmlBg && htmlBg !== 'rgba(0, 0, 0, 0)' && htmlBg !== 'transparent') {
+      return this.parseColor(htmlBg) || { r: 1, g: 1, b: 1, a: 1 }; // fallback to white
+    }
+    
+    // Default to white background
+    return { r: 1, g: 1, b: 1, a: 1 };
+  },
+
+  blendColors(foreground, background) {
+    // Alpha blending: result = foreground * alpha + background * (1 - alpha)
+    const alpha = foreground.a;
+    const invAlpha = 1 - alpha;
+    
+    return {
+      r: (foreground.r * alpha) + (background.r * invAlpha),
+      g: (foreground.g * alpha) + (background.g * invAlpha), 
+      b: (foreground.b * alpha) + (background.b * invAlpha),
+      a: 1 // The blended result is opaque
+    };
   },
 
   downloadFile(content, filename) {

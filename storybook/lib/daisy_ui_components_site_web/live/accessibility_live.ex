@@ -18,7 +18,7 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
       {"Alert", "Standard"} => 10,
       {"Alert", "Outline"} => 20,
       {"Badge", "Standard"} => 30,
-      {"Button", "Standard"} => 40
+      {"Button", "High-Risk States"} => 40
     }
 
     base_index = Map.get(base_indices, {component_name, style}, 0)
@@ -137,40 +137,54 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     },
     %{
       component: "Button",
-      style: "Standard",
+      style: "High-Risk States",
       variants: [
         %{
           name: "Primary",
           class: "btn btn-primary",
-          test_element: "button text on hover state"
+          test_element: "button text content"
+        },
+        %{
+          name: "Soft Primary",
+          class: "btn btn-soft btn-primary",
+          test_element: "soft button text"
+        },
+        %{
+          name: "Outline",
+          class: "btn btn-outline btn-primary",
+          test_element: "button text content"
         }
       ],
-      issue: "Background changes on hover/active affect text contrast"
+      issue: "Button states (hover, active, disabled) often have insufficient contrast due to color/opacity changes"
     }
   ]
 
   def render(assigns) do
     ~H"""
-    <div class="min-h-screen bg-base-100 p-6" phx-hook="AccessibilityChecker" id="accessibility-page">
+    <div class="min-h-screen bg-base-100" phx-hook="AccessibilityChecker" id="accessibility-page">
+
       <!-- Header -->
-      <div class="flex justify-between items-center mb-8">
+      <div class="flex justify-between items-center p-6 mb-10 bg-base-200 shadow sticky top-0 z-50">
         <div>
-          <h1 class="text-4xl font-light text-base-content">Accessibility Testing</h1>
-          <p class="text-base-content/70 text-sm mt-2">WCAG AA Contrast Ratio Analysis for High-Risk Components</p>
-        </div>
-        <div class="flex items-center gap-4">
-          <.link navigate="/colors" class="btn btn-outline btn-sm">
-            <.icon name="hero-swatch" class="h-4 w-4" /> Color Playground
-          </.link>
-          <.link navigate="/home" class="btn btn-outline btn-sm">
+          <.link navigate="/home" class="btn btn-ghost btn-sm">
             <.icon name="hero-arrow-left" class="h-4 w-4" /> Back to Demo
           </.link>
+          <.link navigate="/colors" class="btn btn-ghost btn-sm">
+            <.icon name="hero-swatch" class="h-4 w-4" /> Color Playground
+          </.link>
+        </div>
+        <div class="flex items-center gap-4">
+
+          <button class="btn btn-primary btn-sm" onclick="window.scanAllComponents()" id="scan-button">
+              <.icon name="hero-magnifying-glass" class="h-4 w-4" />
+              Scan All Components
+            </button>
           <.theme_toggle />
         </div>
       </div>
 
       <!-- Test Results Summary -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 px-6 mb-8">
         <div class="stat bg-base-200 rounded-lg py-8">
           <div class="stat-title text-sm">Total Tests</div>
           <div class="stat-value text-2xl" id="total-tests">{Enum.sum(Enum.map(@high_risk_components, fn comp -> length(comp.variants) end))}</div>
@@ -193,24 +207,9 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
         </div>
       </div>
 
-      <!-- Scan Controls -->
-      <div class="card bg-base-100 border border-base-300 shadow mb-8">
-        <div class="card-body">
-          <div class="flex justify-between items-center">
-            <div>
-              <h2 class="card-title text-sm uppercase">Contrast Testing</h2>
-              <p class="text-base-content/70 text-xs italic">WCAG AA: 4.5:1 normal text, 3:1 large text (18pt+ or 14pt+ bold)</p>
-            </div>
-            <button class="btn btn-primary" onclick="window.scanAllComponents()" id="scan-button">
-              <.icon name="hero-magnifying-glass" class="h-4 w-4" />
-              Scan All Components
-            </button>
-          </div>
-        </div>
-      </div>
 
                         <!-- Component Tests -->
-      <div class="space-y-15">
+      <div class="space-y-15 px-6">
         <div :for={{component, component_index} <- Enum.with_index(@high_risk_components)}>
           <div class="card bg-base-100">
             <div class="card-body bor">
@@ -224,9 +223,9 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div :for={{variant, variant_index} <- Enum.with_index(component.variants)}
                      class="rounded-lg p-4 bg-base-100 shadow-sm">
-                  <!-- Class and Results Header -->
-                  <div class="flex justify-between items-center mb-4">
-                    <code class="text-xs bg-base-300 px-3 py-2 rounded font-mono">{variant.class}</code>
+                                  <!-- Class and Results Header -->
+                <div class="flex justify-between items-center mb-4">
+                  <code class="text-xs bg-base-300 px-3 py-2 rounded font-mono max-w-[50%] truncate" title={variant.class}>{variant.class}</code>
                     <div
                       class="contrast-result hidden"
                       id={"result-#{get_test_index(component.component, component.style, variant_index)}"}
@@ -317,9 +316,9 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
   end
 
   defp component_instance("Button", variant) do
-    assigns = %{variant: variant}
+    assigns = %{variant: variant, is_disabled: variant.name == "Disabled"}
     ~H"""
-    <.button class={@variant.class}>
+    <.button class={@variant.class} disabled={@is_disabled}>
       Button Text
     </.button>
     """
