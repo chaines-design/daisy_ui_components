@@ -14,11 +14,9 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
     # Helper to generate unique test indices across all variants
   defp get_test_index(component_name, style, variant_index) do
     base_indices = %{
-      {"Alert", "Standard"} => 0,
-      {"Alert", "Soft"} => 10,
-      {"Alert", "Outline"} => 20,
-      {"Badge", "Standard"} => 30,
-      {"Button", "High-Risk States"} => 40
+      {"Alert", "Variants"} => 0,
+      {"Badge", "Standard"} => 20,
+      {"Button", "Variants"} => 50
     }
 
     base_index = Map.get(base_indices, {component_name, style}, 0)
@@ -29,107 +27,223 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
   @high_risk_components [
     %{
       component: "Alert",
-      style: "Standard",
+      style: "Variants",
       variants: [
+        # Default color variants
         %{
           name: "Default",
           class: "alert",
           test_element: "alert text content"
         },
         %{
+          name: "Default Soft",
+          class: "alert-soft",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Default Outline",
+          class: "alert-outline",
+          test_element: "alert text content"
+        },
+        # Info color variants
+        %{
           name: "Info",
           class: "alert alert-info",
           test_element: "alert text content"
         },
+        %{
+          name: "Info Soft",
+          class: "alert-soft alert-info",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Info Outline",
+          class: "alert-outline alert-info",
+          test_element: "alert text content"
+        },
+        # Success color variants
         %{
           name: "Success",
           class: "alert alert-success",
           test_element: "alert text content"
         },
         %{
+          name: "Success Soft",
+          class: "alert-soft alert-success",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Success Outline",
+          class: "alert-outline alert-success",
+          test_element: "alert text content"
+        },
+        # Warning color variants
+        %{
           name: "Warning",
           class: "alert alert-warning",
           test_element: "alert text content"
         },
         %{
-          name: "Error",
-          class: "alert alert-error",
-          test_element: "alert text content"
-        }
-      ],
-      issue: "Alert color variants may have contrast issues with text content on colored backgrounds"
-    },
-    %{
-      component: "Alert",
-      style: "Soft",
-      variants: [
-        %{
-          name: "Default",
-          class: "alert-soft",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Info",
-          class: "alert-soft alert-info",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Success",
-          class: "alert-soft alert-success",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Warning",
+          name: "Warning Soft",
           class: "alert-soft alert-warning",
           test_element: "alert text content"
         },
         %{
-          name: "Error",
-          class: "alert-soft alert-error",
-          test_element: "alert text content"
-        }
-      ],
-      issue: "Alert soft variants use opacity/color-mix which may cause contrast issues with text content"
-    },
-    %{
-      component: "Alert",
-      style: "Outline",
-      variants: [
-        %{
-          name: "Default",
-          class: "alert-outline",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Info",
-          class: "alert-outline alert-info",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Success",
-          class: "alert-outline alert-success",
-          test_element: "alert text content"
-        },
-        %{
-          name: "Warning",
+          name: "Warning Outline",
           class: "alert-outline alert-warning",
           test_element: "alert text content"
         },
+        # Error color variants
         %{
           name: "Error",
+          class: "alert alert-error",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Error Soft",
+          class: "alert-soft alert-error",
+          test_element: "alert text content"
+        },
+        %{
+          name: "Error Outline",
           class: "alert-outline alert-error",
           test_element: "alert text content"
         }
       ],
-      issue: "Alert outline variants may have insufficient contrast between border/text and background"
+      issue: "Alert variants (standard, soft, outline) across different colors may have contrast issues due to color-mix and opacity usage"
     },
     %{
       component: "Badge",
       style: "Standard",
       variants: [
         %{
+          name: "Default",
+          class: "badge",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Default Soft",
+          class: "badge badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Default Outline",
+          class: "badge badge-outline",
+          test_element: "badge text content"
+        },
+        %{
           name: "Primary",
           class: "badge badge-primary",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Primary Soft",
+          class: "badge badge-primary badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Primary Outline",
+          class: "badge badge-primary badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Error",
+          class: "badge badge-error",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Error Soft",
+          class: "badge badge-error badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Error Outline",
+          class: "badge badge-error badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Success",
+          class: "badge badge-success",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Success Soft",
+          class: "badge badge-success badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Success Outline",
+          class: "badge badge-success badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Warning",
+          class: "badge badge-warning",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Warning Soft",
+          class: "badge badge-warning badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Warning Outline",
+          class: "badge badge-warning badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Info",
+          class: "badge badge-info",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Info Soft",
+          class: "badge badge-info badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Info Outline",
+          class: "badge badge-info badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Secondary",
+          class: "badge badge-secondary",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Secondary Soft",
+          class: "badge badge-secondary badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Secondary Outline",
+          class: "badge badge-secondary badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Accent",
+          class: "badge badge-accent",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Accent Soft",
+          class: "badge badge-accent badge-soft",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Accent Outline",
+          class: "badge badge-accent badge-outline",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Neutral",
+          class: "badge badge-neutral",
+          test_element: "badge text content"
+        },
+        %{
+          name: "Ghost",
+          class: "badge badge-ghost",
           test_element: "badge text content"
         }
       ],
@@ -293,8 +407,11 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
             <.icon name="hero-swatch" class="h-4 w-4" /> Color Playground
           </.link>
         </div>
-        <div class="flex items-center gap-4">
-
+        <div class="flex items-center gap-3">
+          <button class="btn btn-ghost btn-sm hidden" onclick="window.resetScanResults()" id="reset-button">
+            <.icon name="hero-arrow-path" class="h-4 w-4" />
+            Reset
+          </button>
           <button class="btn btn-primary btn-sm" onclick="window.scanAllComponents()" id="scan-button">
               <.icon name="hero-magnifying-glass" class="h-4 w-4" />
               Scan All Components
@@ -429,9 +546,9 @@ defmodule DaisyUIComponentsSiteWeb.AccessibilityLive do
   end
 
   defp component_instance("Badge", variant) do
-    assigns = %{variant: variant, name: variant.name}
+    assigns = %{variant: variant}
     ~H"""
-    <.badge class={@variant.class}>{@name} Badge</.badge>
+    <.badge class={@variant.class}>Badge</.badge>
     """
   end
 

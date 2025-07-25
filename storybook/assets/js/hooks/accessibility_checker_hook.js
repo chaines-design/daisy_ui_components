@@ -7,6 +7,7 @@ export const AccessibilityChecker = {
     // Global functions for accessibility checking
     window.scanAllComponents = () => this.scanAllComponents();
     window.exportResults = (type) => this.exportResults(type);
+    window.resetScanResults = () => this.resetScanResults();
     
     // Store results for export
     this.testResults = [];
@@ -79,6 +80,12 @@ export const AccessibilityChecker = {
             exportButtons.forEach(btn => {
               if (btn) btn.disabled = false;
             });
+            
+            // Show reset button
+            const resetButton = document.getElementById('reset-button');
+            if (resetButton) {
+              resetButton.classList.remove('hidden');
+            }
             
             console.log('Accessibility scan completed');
           }
@@ -813,5 +820,55 @@ export const AccessibilityChecker = {
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+  },
+
+  resetScanResults() {
+    console.log('Resetting scan results...');
+    
+    // Clear test results
+    this.testResults = [];
+    
+    // Hide all result containers
+    const resultContainers = document.querySelectorAll('[id^="result-"]');
+    resultContainers.forEach(container => {
+      container.classList.add('hidden');
+    });
+    
+    // Hide all remediation containers
+    const remediationContainers = document.querySelectorAll('[id^="remediation-"]');
+    remediationContainers.forEach(container => {
+      container.classList.add('hidden');
+    });
+    
+    // Reset summary stats
+    document.getElementById('passing-count').textContent = '-';
+    document.getElementById('borderline-count').textContent = '-';
+    document.getElementById('failing-count').textContent = '-';
+    
+    // Reset scan button state
+    const scanButton = document.getElementById('scan-button');
+    if (scanButton) {
+      scanButton.textContent = 'Scan All Components';
+      scanButton.disabled = false;
+      // Re-add the icon
+      scanButton.innerHTML = '<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> Scan All Components';
+    }
+    
+    // Disable export buttons
+    const exportButtons = [
+      document.getElementById('export-summary'),
+      document.getElementById('export-detailed')
+    ];
+    exportButtons.forEach(btn => {
+      if (btn) btn.disabled = true;
+    });
+    
+    // Hide reset button
+    const resetButton = document.getElementById('reset-button');
+    if (resetButton) {
+      resetButton.classList.add('hidden');
+    }
+    
+    console.log('Scan results reset successfully');
   }
 }; 
